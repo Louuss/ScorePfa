@@ -2,41 +2,80 @@
 
 using namespace std;
 
+QDomNodeList getNodes(QDomElement& n, QStringList args){
+  QDomElement currentElement = n;
+
+  for(int i=0;i<args.length()-1;i++){
+    cout<<args.at(i).toStdString()<<endl;
+    currentElement = currentElement.firstChildElement(args.at(i));
+  }
+
+  return currentElement.elementsByTagName(args.at(args.length()-1));
+}
+
+QDomElement getElement(QDomElement& n, QStringList args){
+  QDomElement currentElement = n;
+
+  for(int i=0;i<args.length();i++){
+    cout<<args.at(i).toStdString()<<endl;
+    currentElement = currentElement.firstChildElement(args.at(i));
+  }
+
+  return currentElement;
+}
 
 QDomNodeList getMidiTracks(QDomDocument& doc){
-  return doc.firstChildElement("Ableton").firstChildElement("LiveSet").firstChildElement("Tracks").elementsByTagName("MidiTrack");
+  QString str = "LiveSet->Tracks->MidiTrack";
+  QStringList args = str.split("->");
+  QDomElement docElem = doc.firstChildElement("Ableton");
+  return getNodes(docElem,args);
 }
 
 QDomNodeList getAudioTracks(QDomDocument& doc){
-  return doc.firstChildElement("Ableton").firstChildElement("LiveSet").firstChildElement("Tracks").elementsByTagName("AudioTrack");
+  QString str = "LiveSet->Tracks->AudioTrack";
+  QStringList args = str.split("->");
+  QDomElement docElem = doc.firstChildElement("Ableton");
+  return getNodes(docElem,args);
 }
 
-QDomNodeList getSlots(QDomNode& track){
-  return track.firstChildElement("DeviceChain").firstChildElement("MainSequencer").firstChildElement("ClipSlotList").elementsByTagName("ClipSlot");
+QDomNodeList getSlots(QDomElement& track){
+  QString str = "DeviceChain->MainSequencer->ClipSlotList->ClipSlot";
+  QStringList args = str.split("->");
+  return getNodes(track, args);
 }
 
-QDomNode getMidiClip(QDomNode& slot){
-  return slot.firstChildElement("ClipSlot").firstChildElement("Value").firstChildElement("MidiClip");
+
+QDomNodeList getAudioClipEvents(QDomElement& track){
+  QString str = "DeviceChain->MainSequencer->Sample->ArrangerAutomation->Events->AudioClip";
+  QStringList args = str.split("->");
+  return getNodes(track, args);
 }
 
-QDomNodeList getAudioClipEvents(QDomNode& track){
-  return track.firstChildElement("DeviceChain").firstChildElement("MainSequencer").firstChildElement("Sample").firstChildElement("ArrangerAutomation").firstChildElement("Events").elementsByTagName("AudioClip");
+QDomNodeList getMidiClipEvents(QDomElement& track){
+  QString str = "DeviceChain->MainSequencer->ClipTimeable->ArrangerAutomation->Events->MidiClip";
+  QStringList args = str.split("->");
+  return getNodes(track, args);
 }
 
-QDomNodeList getMidiClipEvents(QDomNode& track){
-  return track.firstChildElement("DeviceChain").firstChildElement("MainSequencer").firstChildElement("ClipTimeable").firstChildElement("ArrangerAutomation").firstChildElement("Events").elementsByTagName("MidiClip");
+QDomNodeList getKeyTracks(QDomElement& midiClip){
+  QString str = "Notes->KeyTracks->KeyTrack";
+  QStringList args = str.split("->");
+  return getNodes(midiClip, args);
 }
 
-QDomNodeList getKeyTracks(QDomNode& midiClip){
-  return midiClip.firstChildElement("Notes").firstChildElement("KeyTracks").elementsByTagName("KeyTrack");
-
+QDomNodeList getNotes(QDomElement& keyTrack){
+  QString str = "Notes->MidiNoteEvent";
+  QStringList args = str.split("->");
+  return getNodes(keyTrack, args);
 }
 
-QDomNodeList getNotes(QDomNode& keyTrack){
-  return keyTrack.firstChildElement("Notes").elementsByTagName("MidiNoteEvent");
+QDomElement getMidiClip(QDomElement& slot){
+  QString str = "ClipSlot->Value->MidiClip";
+  QStringList args = str.split("->");
+  return getElement(slot, args);
 }
 
-int loadNotes(QDomNode& keyTrack, vector<Midi::NoteData>& notes, Midi::midi_size_t midiKeyValue){
+int loadNotes(QDomElement& keyTrack, vector<Midi::NoteData>& notes, Midi::midi_size_t midiKeyValue){
   QDomNodeList notesListXml = getNotes(keyTrack);
 
   for (int i = 0; i < notesListXml.length(); i++) {
@@ -61,7 +100,7 @@ int loadNotes(QDomNode& keyTrack, vector<Midi::NoteData>& notes, Midi::midi_size
   return 0;
 }
 
-int loadAudioClip(QDomNode& audioClipXml, AudioClip& audioClip){
+int loadAudioClip(QDomElement& audioClipXml, AudioClip& audioClip){
   cout << "---------AUDIOCLIP--------" << endl;
 
   QString name = audioClipXml.firstChildElement("SampleRef").firstChildElement("FileRef").firstChildElement("Name").attributes().item(0).nodeValue();
@@ -87,14 +126,14 @@ int loadAudioClip(QDomNode& audioClipXml, AudioClip& audioClip){
 }
 
 
-int loadMidiClip(QDomNode& midiClipXml, MidiClip& midiClip){
+int loadMidiClip(QDomElement& midiClipXml, MidiClip& midiClip){
   QDomNodeList keyTrackListXml = getKeyTracks(midiClipXml);
   cout << "---------MIDICLIP--------" << endl;
 
   for (int i = 0; i < keyTrackListXml.length(); i++) {
 
     Midi::midi_size_t midiKeyValue = stoi(keyTrackListXml.item(i).firstChildElement("MidiKey").attributes().item(0).nodeValue().toStdString());
-    QDomNode a = keyTrackListXml.item(i);
+    QDomElement a = keyTrackListXml.item(i).toElement();
     loadNotes(a, midiClip.midiNotes, midiKeyValue);
     double start = stod(midiClipXml.firstChildElement("CurrentStart").attributes().item(0).nodeValue().toStdString());
     double end = stod(midiClipXml.firstChildElement("CurrentEnd").attributes().item(0).nodeValue().toStdString());;
@@ -112,11 +151,11 @@ int loadMidiClip(QDomNode& midiClipXml, MidiClip& midiClip){
 
   return 0;
 }
-int loadSlots(QDomNode& midiTrack, vector<ClipSlot>& clipSlots){
+int loadSlots(QDomElement& midiTrack, vector<ClipSlot>& clipSlots){
   QDomNodeList slotsXml = getSlots(midiTrack);
   for (int i = 0; i < slotsXml.length(); i++) {
-    QDomNode a = slotsXml.item(i);
-    QDomNode slotMidiClip = getMidiClip(a);
+    QDomElement a = slotsXml.item(i).toElement();
+    QDomElement slotMidiClip = getMidiClip(a);
     if(!(slotMidiClip.isNull())){
       clipSlots.emplace_back();
       loadMidiClip(slotMidiClip, clipSlots[clipSlots.size()-1].midiClip);
@@ -125,20 +164,20 @@ int loadSlots(QDomNode& midiTrack, vector<ClipSlot>& clipSlots){
   return 0;
 }
 
-int loadMidiClipEvents(QDomNode& midiTrack, std::vector<MidiClip>& midiClipEvents){
+int loadMidiClipEvents(QDomElement& midiTrack, std::vector<MidiClip>& midiClipEvents){
   QDomNodeList midiClipEventsXml = getMidiClipEvents(midiTrack);
   for (int i = 0; i < midiClipEventsXml.length(); i++) {
-    QDomNode a = midiClipEventsXml.item(i);
+    QDomElement a = midiClipEventsXml.item(i).toElement();
     midiClipEvents.emplace_back();
     loadMidiClip(a, midiClipEvents[midiClipEvents.size()-1]);
   }
   return 0;
 }
 
-int loadAudioClipEvents(QDomNode& audioTrack, std::vector<AudioClip>& audioClipEvents){
+int loadAudioClipEvents(QDomElement& audioTrack, std::vector<AudioClip>& audioClipEvents){
   QDomNodeList audioClipEventsXml = getAudioClipEvents(audioTrack);
   for (int i = 0; i < audioClipEventsXml.length(); i++) {
-    QDomNode a = audioClipEventsXml.item(i);
+    QDomElement a = audioClipEventsXml.item(i).toElement();
     audioClipEvents.emplace_back();
     loadAudioClip(a, audioClipEvents[audioClipEvents.size()-1]);
   }
@@ -152,7 +191,7 @@ int loadMidiTracks(QDomDocument& docXml, vector<MidiTrack>& midiTracks){
     cout << "---------MIDITRACK--------" << endl;
 
     midiTracks.emplace_back();
-    QDomNode a = midiTracksXml.item(i);
+    QDomElement a = midiTracksXml.item(i).toElement();
     loadSlots(a, midiTracks[i].clipSlots);
     loadMidiClipEvents(a, midiTracks[i].midiClipEvents);
     cout << "--------------------------" << endl;
@@ -164,12 +203,12 @@ int loadMidiTracks(QDomDocument& docXml, vector<MidiTrack>& midiTracks){
 
 int loadAudioTracks(QDomDocument& docXml, vector<AudioTrack>& audioTracks){
   QDomNodeList audioTracksXml = getAudioTracks(docXml);
-  std::cout<< "NB Midi Tracks: " << audioTracksXml.length() << std::endl;
+  std::cout<< "NB Audio Tracks: " << audioTracksXml.length() << std::endl;
   for (int i = 0; i < audioTracksXml.length(); i++) {
     cout << "---------AUDIOTRACK--------" << endl;
 
     audioTracks.emplace_back();
-    QDomNode a = audioTracksXml.item(i);
+    QDomElement a = audioTracksXml.item(i).toElement();
     loadAudioClipEvents(a, audioTracks[i].audioClipEvents);
     cout << "--------------------------" << endl;
 

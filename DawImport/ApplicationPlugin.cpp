@@ -81,7 +81,7 @@ void ApplicationPlugin::generate()
   Scenario::Command::Macro m{new GenerateAScore, doc->context()};
 
   QDomDocument docXml;
-  QFile file(PLUGIN_SOURCE_DIR "/DawImport/resources/audio1.xml");
+  QFile file(PLUGIN_SOURCE_DIR "/DawImport/resources/testAll.xml");
   if (!file.open(QIODevice::ReadOnly) || !docXml.setContent(&file)){
       //std::cout << "ERROR: error oppenning xml file" << std::endl
     }
@@ -92,10 +92,10 @@ void ApplicationPlugin::generate()
   loadDocument(docXml, abletonDoc);
 
   createAudioClip(base, *firstScenario, m, this->context, abletonDoc.audioTracks[0].audioClipEvents[0]);
+  std::cout<<"kjvvovvjov"<<std::endl;
+  Scenario::Command::Macro m2{new GenerateAScore, doc->context()};
 
-  //Scenario::Command::Macro m2{new GenerateAScore, doc->context()};
-
-  //createMidiClip(base, *firstScenario, m2, this->context, abletonDoc.midiTracks[0]->midiClipEvents[1]);
+  createMidiClip(base, *firstScenario, m2, this->context, abletonDoc.midiTracks[0].midiClipEvents[0]);
 
 
 }
