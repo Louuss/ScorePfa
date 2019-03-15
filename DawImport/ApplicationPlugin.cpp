@@ -91,7 +91,7 @@ void ApplicationPlugin::generate()
 
   loadDocument(docXml, abletonDoc);
 
-  createAudioClip(base, *firstScenario, m, this->context, abletonDoc.audioTracks[0]->audioClipEvents[0]);
+  createAudioClip(base, *firstScenario, m, this->context, abletonDoc.audioTracks[0].audioClipEvents[0]);
 
   //Scenario::Command::Macro m2{new GenerateAScore, doc->context()};
 

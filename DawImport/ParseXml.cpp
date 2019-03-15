@@ -112,49 +112,49 @@ int loadMidiClip(QDomNode& midiClipXml, MidiClip& midiClip){
 
   return 0;
 }
-int loadSlots(QDomNode& midiTrack, vector<ClipSlot*>& clipSlots){
+int loadSlots(QDomNode& midiTrack, vector<ClipSlot>& clipSlots){
   QDomNodeList slotsXml = getSlots(midiTrack);
   for (int i = 0; i < slotsXml.length(); i++) {
     QDomNode a = slotsXml.item(i);
     QDomNode slotMidiClip = getMidiClip(a);
     if(!(slotMidiClip.isNull())){
-      clipSlots.push_back(new ClipSlot());
-      loadMidiClip(slotMidiClip, clipSlots[clipSlots.size()-1]->midiClip);
+      clipSlots.emplace_back();
+      loadMidiClip(slotMidiClip, clipSlots[clipSlots.size()-1].midiClip);
     }
   }
   return 0;
 }
 
-int loadMidiClipEvents(QDomNode& midiTrack, std::vector<MidiClip *>& midiClipEvents){
+int loadMidiClipEvents(QDomNode& midiTrack, std::vector<MidiClip>& midiClipEvents){
   QDomNodeList midiClipEventsXml = getMidiClipEvents(midiTrack);
   for (int i = 0; i < midiClipEventsXml.length(); i++) {
     QDomNode a = midiClipEventsXml.item(i);
-    midiClipEvents.push_back(new MidiClip());
-    loadMidiClip(a, *(midiClipEvents[midiClipEvents.size()-1]));
+    midiClipEvents.emplace_back();
+    loadMidiClip(a, midiClipEvents[midiClipEvents.size()-1]);
   }
   return 0;
 }
 
-int loadAudioClipEvents(QDomNode& audioTrack, std::vector<AudioClip *>& audioClipEvents){
+int loadAudioClipEvents(QDomNode& audioTrack, std::vector<AudioClip>& audioClipEvents){
   QDomNodeList audioClipEventsXml = getAudioClipEvents(audioTrack);
   for (int i = 0; i < audioClipEventsXml.length(); i++) {
     QDomNode a = audioClipEventsXml.item(i);
-    audioClipEvents.push_back(new AudioClip());
-    loadAudioClip(a, *(audioClipEvents[audioClipEvents.size()-1]));
+    audioClipEvents.emplace_back();
+    loadAudioClip(a, audioClipEvents[audioClipEvents.size()-1]);
   }
   return 0;
 }
 
-int loadMidiTracks(QDomDocument& docXml, vector<MidiTrack *>& midiTracks){
+int loadMidiTracks(QDomDocument& docXml, vector<MidiTrack>& midiTracks){
   QDomNodeList midiTracksXml = getMidiTracks(docXml);
   std::cout<< "NB Midi Tracks: " << midiTracksXml.length() << std::endl;
   for (int i = 0; i < midiTracksXml.length(); i++) {
     cout << "---------MIDITRACK--------" << endl;
 
-    midiTracks.push_back(new MidiTrack());
+    midiTracks.emplace_back();
     QDomNode a = midiTracksXml.item(i);
-    loadSlots(a, midiTracks[i]->clipSlots);
-    loadMidiClipEvents(a, midiTracks[i]->midiClipEvents);
+    loadSlots(a, midiTracks[i].clipSlots);
+    loadMidiClipEvents(a, midiTracks[i].midiClipEvents);
     cout << "--------------------------" << endl;
 
   }
@@ -162,15 +162,15 @@ int loadMidiTracks(QDomDocument& docXml, vector<MidiTrack *>& midiTracks){
   return 0;
 }
 
-int loadAudioTracks(QDomDocument& docXml, vector<AudioTrack *>& audioTracks){
+int loadAudioTracks(QDomDocument& docXml, vector<AudioTrack>& audioTracks){
   QDomNodeList audioTracksXml = getAudioTracks(docXml);
   std::cout<< "NB Midi Tracks: " << audioTracksXml.length() << std::endl;
   for (int i = 0; i < audioTracksXml.length(); i++) {
     cout << "---------AUDIOTRACK--------" << endl;
 
-    audioTracks.push_back(new AudioTrack());
+    audioTracks.emplace_back();
     QDomNode a = audioTracksXml.item(i);
-    loadAudioClipEvents(a, audioTracks[i]->audioClipEvents);
+    loadAudioClipEvents(a, audioTracks[i].audioClipEvents);
     cout << "--------------------------" << endl;
 
   }

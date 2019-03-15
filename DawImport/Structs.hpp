@@ -26,19 +26,19 @@ struct ClipSlot{
 };
 
 struct MidiTrack{
-  std::vector<ClipSlot *> clipSlots;
-  std::vector<MidiClip *> midiClipEvents;
+  std::vector<ClipSlot> clipSlots;
+  std::vector<MidiClip> midiClipEvents;
 
 };
 
 struct AudioTrack{
-  std::vector<AudioClip *> audioClipEvents;
+  std::vector<AudioClip> audioClipEvents;
 
 };
 
 struct AbletonDocument{
-  std::vector<MidiTrack *> midiTracks;
-  std::vector<AudioTrack *> audioTracks;
+  std::vector<MidiTrack> midiTracks;
+  std::vector<AudioTrack> audioTracks;
 
 
 };

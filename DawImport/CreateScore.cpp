@@ -5,7 +5,7 @@ void createMidiClip(
     const Scenario::ProcessModel& scenar,
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context,
-    MidiClip * midiClip)
+    MidiClip & midiClip)
 {
 
 
@@ -37,7 +37,7 @@ void createMidiClip(
   }
 
   /////////////////////////////////////////////////////////////////////////////
-  macro.submit(new Midi::ReplaceNotes(midi, midiClip->midiNotes, 55, 85, 10000ms));
+  macro.submit(new Midi::ReplaceNotes(midi, midiClip.midiNotes, 55, 85, 10000ms));
 
 
   // Et un autre
@@ -94,7 +94,7 @@ void createAudioClip(
     const Scenario::ProcessModel& scenar,
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context,
-    AudioClip * audioClip)
+    AudioClip& audioClip)
 {
 
 
@@ -106,7 +106,7 @@ void createAudioClip(
 
   const auto& [t2, e2, s2] = macro.createDot(scenar, {20s, y});
   const auto& i1 = macro.createInterval(scenar, s1.id(), s2.id());
-  QString path  = PLUGIN_SOURCE_DIR "/DawImport/resources/" + audioClip->path;
+  QString path  = PLUGIN_SOURCE_DIR "/DawImport/resources/" + audioClip.path;
 
   auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(i1, {});
   macro.createProcessInNewSlot<Media::Sound::ProcessModel>(loop.interval(), path);

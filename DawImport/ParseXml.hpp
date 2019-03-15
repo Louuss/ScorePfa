@@ -23,11 +23,11 @@ QDomNodeList getNotes(QDomNode& keyTrack);
 int loadNotes(QDomNode& keyTrack, vector<Midi::NoteData>& notes, int midiKeyValue);
 int loadMidiClip(QDomNode& midiClipXml, MidiClip& midiClip);
 int loadAudioClip(QDomNode& audioClipXml, AudioClip& audioClip);
-int loadSlots(QDomNode& midiTrack, vector<ClipSlot*>& clipSlots);
+int loadSlots(QDomNode& midiTrack, vector<ClipSlot>& clipSlots);
 
 
-int loadMidiTracks(QDomDocument& docXml, vector<MidiTrack *>& midiTracks);
-int loadAudioTracks(QDomDocument& docXml, vector<AudioTrack *>& audioTracks);
+int loadMidiTracks(QDomDocument& docXml, vector<MidiTrack>& midiTracks);
+int loadAudioTracks(QDomDocument& docXml, vector<AudioTrack>& audioTracks);
 
 int loadDocument(QDomDocument& docXml, AbletonDocument& abletonDoc);
 #endif
