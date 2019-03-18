@@ -1,6 +1,15 @@
+/**
+  \file ParseXml.cpp
+  \brief Parse an xml from Ableton
+
+  *Use a QDomDocument of an xml from ableton to initalise the structures from Struct.hpp that will be loaded into Score via functions in CreateScore.cpp
+  */
+
 #include "ParseXml.hpp"
 
 using namespace std;
+
+
 
 QDomNodeList getNodes(QDomElement& n, QStringList args){
   QDomElement currentElement = n;
@@ -90,9 +99,6 @@ int loadNotes(QDomElement& keyTrack, vector<Midi::NoteData>& notes, Midi::midi_s
     double duration = stof(notesListXml.item(i).attributes().namedItem("Duration").nodeValue().toStdString());
     double time = stof(notesListXml.item(i).attributes().namedItem("Time").nodeValue().toStdString());
 
-    /*NoteData(double s, double d, midi_size_t p, midi_size_t v)
-      : m_start{s}, m_duration{d}, m_pitch{p}, m_velocity{v}
-      {*/
 
     notes.emplace_back(time, duration, midiKeyValue, velocity);
 
@@ -142,6 +148,7 @@ int loadMidiClip(QDomElement& midiClipXml, MidiClip& midiClip){
     midiClip.start = start;
     midiClip.end = end;
     midiClip.startRelative = startRelative;
+
     cout << start << endl;
     cout << end << endl;
     cout << startRelative << endl;

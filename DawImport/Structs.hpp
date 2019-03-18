@@ -1,3 +1,11 @@
+/**
+  \file Structs.hpp
+  \brief Structs annalogue to to those of Ableton
+
+  *These structures act as an etermediary between Ableton objects and Score Objects
+  */
+
+
 #ifndef STRUCTS
 #define STRUCTS
 

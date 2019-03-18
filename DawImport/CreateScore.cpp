@@ -1,4 +1,14 @@
+/**
+  \file CreateScore.cpp
+  \brief Create objects in Score.
+
+  *Create objects in Score based on Ableton structures that have been generated from the xml.
+  */
+
 #include "CreateScore.hpp"
+
+
+
 
 void createMidiClip(
     const Scenario::ScenarioDocumentModel& root,
