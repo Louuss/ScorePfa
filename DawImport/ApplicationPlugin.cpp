@@ -27,6 +27,7 @@
 #include "Structs.hpp"
 #include "ParseXml.hpp"
 #include "CreateScore.hpp"
+#include "gzipSupport.hpp"
 
 
 namespace DawImport
@@ -38,12 +39,6 @@ static void generateScore(
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context)
 {
-
-
-
-
-
-
 
 }
 
@@ -80,23 +75,40 @@ void ApplicationPlugin::generate()
 
   Scenario::Command::Macro m{new GenerateAScore, doc->context()};
 
-  QDomDocument docXml;
-  QFile file(PLUGIN_SOURCE_DIR "/DawImport/resources/audio1.xml");
-  if (!file.open(QIODevice::ReadOnly) || !docXml.setContent(&file)){
-      //std::cout << "ERROR: error oppenning xml file" << std::endl
+  //Opening a selection window
+  QString caption = QString::fromStdString("Import a document");
+  QString filter = QString::fromStdString("Live Files (*.als)");
+  QFileDialog liveFile{nullptr, caption, QString(), filter};
+  liveFile.setFileMode(QFileDialog::ExistingFile);
+
+  if (liveFile.exec())
+  {
+    QString liveFilePath = liveFile.selectedFiles().first();
+    QFile file(liveFilePath);
+
+    if (!file.open(QIODevice::ReadOnly)){
+        //std::cout << "ERROR: error oppenning xml file" << std::endl
     }
+    QByteArray input = file.readAll();
+    QByteArray output;
+    gzipDecompress(input , output);
+
+    QDomDocument docXml;
+    docXml.setContent(output);
 
 
-  AbletonDocument abletonDoc;
 
-  loadDocument(docXml, abletonDoc);
 
-  createAudioClip(base, *firstScenario, m, this->context, abletonDoc.audioTracks[0]->audioClipEvents[0]);
+    AbletonDocument abletonDoc;
 
-  //Scenario::Command::Macro m2{new GenerateAScore, doc->context()};
+    loadDocument(docXml, abletonDoc);
 
-  //createMidiClip(base, *firstScenario, m2, this->context, abletonDoc.midiTracks[0]->midiClipEvents[1]);
+    createAudioClip(base, *firstScenario, m, this->context, abletonDoc.audioTracks[0]->audioClipEvents[0]);
 
+    //Scenario::Command::Macro m2{new GenerateAScore, doc->context()};
+
+    //createMidiClip(base, *firstScenario, m2, this->context, abletonDoc.midiTracks[0]->midiClipEvents[1]);
+  }
 
 }
 
