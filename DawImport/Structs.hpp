@@ -21,9 +21,15 @@ struct AudioClip{
   double startRelative;
 };
 
+struct MidiNote{
+  double start;
+  double duration;
+  uint8_t pitch;
+  uint8_t velocity;
+{
 
 struct MidiClip{
-  std::vector<Midi::NoteData> midiNotes;
+  std::vector<MidiNote> midiNotes;
   double start;
   double end;
   double startRelative;

@@ -40,11 +40,6 @@ static void generateScore(
 {
 
 
-
-
-
-
-
 }
 
 
@@ -68,6 +63,8 @@ void ApplicationPlugin::generate()
   auto doc = currentDocument();
   if(!doc)
       return;
+
+
   Scenario::ScenarioDocumentModel& base = score::IDocument::get<Scenario::ScenarioDocumentModel>(*doc);
 
   const auto& baseInterval = base.baseScenario().interval();
@@ -90,13 +87,18 @@ void ApplicationPlugin::generate()
   AbletonDocument abletonDoc;
 
   loadDocument(docXml, abletonDoc);
+  createTrack(base, *firstScenario, m, this->context, 10,0.02);
 
-  createAudioClip(base, *firstScenario, m, this->context, abletonDoc.audioTracks[0].audioClipEvents[0]);
+  createTrack(base, *firstScenario, m, this->context, 10,0.1);
+
+  m.commit();
+
+  /*createAudioClip(base, *firstScenario, m, this->context, abletonDoc.audioTracks[0].audioClipEvents[0]);
   std::cout<<"kjvvovvjov"<<std::endl;
   Scenario::Command::Macro m2{new GenerateAScore, doc->context()};
 
   createMidiClip(base, *firstScenario, m2, this->context, abletonDoc.midiTracks[0].midiClipEvents[0]);
-
+*/
 
 }
 

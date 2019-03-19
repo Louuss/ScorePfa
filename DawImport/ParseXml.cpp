@@ -84,7 +84,7 @@ QDomElement getMidiClip(QDomElement& slot){
   return getElement(slot, args);
 }
 
-int loadNotes(QDomElement& keyTrack, vector<Midi::NoteData>& notes, Midi::midi_size_t midiKeyValue){
+int loadNotes(QDomElement& keyTrack, vector<Midi::NoteData>& notes, uint8_t midiKeyValue){
   QDomNodeList notesListXml = getNotes(keyTrack);
 
   for (int i = 0; i < notesListXml.length(); i++) {
@@ -95,7 +95,7 @@ int loadNotes(QDomElement& keyTrack, vector<Midi::NoteData>& notes, Midi::midi_s
     cout << "Midi Duration: " << notesListXml.item(i).attributes().namedItem("Duration").nodeValue().toStdString() << endl;
     cout << "Midi Time: " << notesListXml.item(i).attributes().namedItem("Time").nodeValue().toStdString() << endl;
     cout << "---------------------" << endl;
-    Midi::midi_size_t velocity = stoi(notesListXml.item(i).attributes().namedItem("Velocity").nodeValue().toStdString());
+    uint8_t velocity = stoi(notesListXml.item(i).attributes().namedItem("Velocity").nodeValue().toStdString());
     double duration = stof(notesListXml.item(i).attributes().namedItem("Duration").nodeValue().toStdString());
     double time = stof(notesListXml.item(i).attributes().namedItem("Time").nodeValue().toStdString());
 
@@ -138,7 +138,7 @@ int loadMidiClip(QDomElement& midiClipXml, MidiClip& midiClip){
 
   for (int i = 0; i < keyTrackListXml.length(); i++) {
 
-    Midi::midi_size_t midiKeyValue = stoi(keyTrackListXml.item(i).firstChildElement("MidiKey").attributes().item(0).nodeValue().toStdString());
+    uint8_t midiKeyValue = stoi(keyTrackListXml.item(i).firstChildElement("MidiKey").attributes().item(0).nodeValue().toStdString());
     QDomElement a = keyTrackListXml.item(i).toElement();
     loadNotes(a, midiClip.midiNotes, midiKeyValue);
     double start = stod(midiClipXml.firstChildElement("CurrentStart").attributes().item(0).nodeValue().toStdString());
