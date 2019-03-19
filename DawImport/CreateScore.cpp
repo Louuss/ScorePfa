@@ -1,11 +1,79 @@
+/**
+  \file CreateScore.cpp
+  \brief Create objects in Score.
+
+  *Create objects in Score based on Ableton structures that have been generated from the xml.
+  */
+
 #include "CreateScore.hpp"
+
+
+
+void createTrack(
+    const Scenario::ScenarioDocumentModel& root,
+    const Scenario::ProcessModel& scenar,
+    Scenario::Command::Macro& macro,
+    const score::GUIApplicationContext& context,
+    double length,
+    double y)
+{
+  using namespace std::literals;
+  auto& start1 = macro.createState(scenar, scenar.startEvent().id(), y);
+
+  QTime t(0,0,0);
+  t = t.addSecs((int)length);
+  t = t.addMSecs((int)(length/1000));
+  const auto& [t2, e2, end1] = macro.createDot(scenar, {t, y});
+
+  const auto& interval1 = macro.createInterval(scenar, start1.id(), end1.id());
+
+  //Ajoutons un premier process
+  auto& track = macro.createProcessInNewSlot<Scenario::ProcessModel>(interval1, {});
+
+//////////////////////////////////////////////////
+
+  auto& start2 = macro.createState(track, track.startEvent().id(), y);
+
+  const auto& [tt2, ee2, end2] = macro.createDot(track, {2s, y});
+
+  const auto& interval2 = macro.createInterval(track, start2.id(), end2.id());
+
+  //Ajoutons un premier process
+  auto& midi = macro.createProcessInNewSlot<Midi::ProcessModel>(interval2, {});
+
+
+///////////////////////////////////////////////////
+
+  //const auto& [ttt2, eee2, end3] = macro.createDot(track, {2s, y});
+
+  const auto& interval3 = macro.createIntervalAfter(track, end2.id(), {5000ms, y});;
+
+  const auto& [tttt2, eeee2, end3] = macro.createDot(track, {5000ms, y});
+
+//const auto& interval4= macro.createInterval(track, end3.id(), end4.id());
+//Ajoutons un premier process
+//auto& midi2 = macro.createProcessInNewSlot<Midi::ProcessModel>(interval4, {});
+
+
+
+
+}
+
+std::vector<NoteData> convertToScoreNotes(std::vector<MidiNote> midiNotes){
+  std::vector<NoteData> scoreNotes;
+  for (int i=0; i<midiNotes.length; i++){
+    MidiNote note = midiNotes[i];
+    scoreNotes.emplace_back(note.start, note.duration, note.pitch, note.velocity);
+  }
+  return scoreNotes;
+}
 
 void createMidiClip(
     const Scenario::ScenarioDocumentModel& root,
     const Scenario::ProcessModel& scenar,
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context,
-    MidiClip * midiClip)
+    MidiClip & midiClip)
 {
 
 
@@ -23,21 +91,8 @@ void createMidiClip(
 
   /////////////////////////////////////////////////////////////////////////////
 
-
-  for (int i = 0; i < 3; i++) {
-
-
-
-      //n.firstChildElement("Name").firstChildElement("EffectiveName").attributes().item(0).nodeValue().toStdString()
-
-      //QDomElement from = n.firstChildElement("from");
-      //QDomElement to = n.firstChildElement("to");
-      //QDomElement conversion = n.firstChildElement("conversion");
-
-  }
-
   /////////////////////////////////////////////////////////////////////////////
-  macro.submit(new Midi::ReplaceNotes(midi, midiClip->midiNotes, 55, 85, 10000ms));
+  macro.submit(new Midi::ReplaceNotes(midi, convertToScoreNotes(midiClip.midiNotes), 55, 85, 10000ms));
 
 
   // Et un autre
@@ -94,7 +149,7 @@ void createAudioClip(
     const Scenario::ProcessModel& scenar,
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context,
-    AudioClip * audioClip)
+    AudioClip& audioClip)
 {
 
 
@@ -106,7 +161,7 @@ void createAudioClip(
 
   const auto& [t2, e2, s2] = macro.createDot(scenar, {20s, y});
   const auto& i1 = macro.createInterval(scenar, s1.id(), s2.id());
-  QString path  = PLUGIN_SOURCE_DIR "/DawImport/resources/" + audioClip->path;
+  QString path  = PLUGIN_SOURCE_DIR "/DawImport/resources/" + audioClip.path;
 
   auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(i1, {});
   macro.createProcessInNewSlot<Media::Sound::ProcessModel>(loop.interval(), path);

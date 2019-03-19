@@ -30,11 +30,18 @@ void createMidiClip(
     const Scenario::ProcessModel& scenar,
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context,
-    MidiClip * midiClip);
+    MidiClip& midiClip);
+
+void createTrack(
+    const Scenario::ScenarioDocumentModel& root,
+    const Scenario::ProcessModel& scenar,
+    Scenario::Command::Macro& macro,
+    const score::GUIApplicationContext& context,
+    double length,double y);
 
 void createAudioClip(
     const Scenario::ScenarioDocumentModel& root,
     const Scenario::ProcessModel& scenar,
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context,
-    AudioClip * MidiClip);
+    AudioClip& MidiClip);
