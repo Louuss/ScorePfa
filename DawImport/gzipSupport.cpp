@@ -1,3 +1,5 @@
+#include "gzipSupport.hpp"
+
 bool gzipDecompress(QByteArray input, QByteArray &output)
 {
     // Prepare output
