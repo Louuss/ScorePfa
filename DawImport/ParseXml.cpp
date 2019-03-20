@@ -33,12 +33,6 @@ QDomElement getElement(QDomElement& n, QStringList args){
   return currentElement;
 }
 
-QDomNodeList getMidiTracks(QDomDocument& doc){
-  QString str = "LiveSet->Tracks->MidiTrack";
-  QStringList args = str.split("->");
-  QDomElement docElem = doc.firstChildElement("Ableton");
-  return getNodes(docElem,args);
-}
 
 QDomNodeList getAudioTracks(QDomDocument& doc){
   QString str = "LiveSet->Tracks->AudioTrack";
@@ -47,12 +41,21 @@ QDomNodeList getAudioTracks(QDomDocument& doc){
   return getNodes(docElem,args);
 }
 
-QDomNodeList getSlots(QDomElement& track){
-  QString str = "DeviceChain->MainSequencer->ClipSlotList->ClipSlot";
-  QStringList args = str.split("->");
-  return getNodes(track, args);
+QDomNodeList getList(QDomDocument& doc, QString str){
+  return getNodes(doc.firstChildElement("Ableton"), str.split("->"));
 }
 
+QDomNodeList getList(QDomElement& elem, QString str){
+  return getNodes(elem, str.split("->"));
+}
+
+/*
+QDomNodeList getMidiTracks(QDomDocument& doc){
+  QString str = "LiveSet->Tracks->MidiTrack";
+  QStringList args = str.split("->");
+  QDomElement docElem = doc.firstChildElement("Ableton");
+  return getNodes(docElem,args);
+}
 
 QDomNodeList getAudioClipEvents(QDomElement& track){
   QString str = "DeviceChain->MainSequencer->Sample->ArrangerAutomation->Events->AudioClip";
@@ -77,12 +80,7 @@ QDomNodeList getNotes(QDomElement& keyTrack){
   QStringList args = str.split("->");
   return getNodes(keyTrack, args);
 }
-
-QDomElement getMidiClip(QDomElement& slot){
-  QString str = "ClipSlot->Value->MidiClip";
-  QStringList args = str.split("->");
-  return getElement(slot, args);
-}
+*/
 
 int loadNotes(QDomElement& keyTrack, vector<MidiNote>& notes, uint8_t midiKeyValue){
   QDomNodeList notesListXml = getNotes(keyTrack);
