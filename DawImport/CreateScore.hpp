@@ -25,6 +25,8 @@
 
 #include "Structs.hpp"
 
+std::vector<Midi::NoteData> convertToScoreNotes(std::vector<MidiNote> midiNotes);
+
 void createMidiClip(
     const Scenario::ScenarioDocumentModel& root,
     const Scenario::ProcessModel& scenar,
@@ -37,7 +39,7 @@ void createTrack(
     const Scenario::ProcessModel& scenar,
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context,
-    double length,double y);
+    double length,double y,MidiClip& midiClip);
 
 void createAudioClip(
     const Scenario::ScenarioDocumentModel& root,
