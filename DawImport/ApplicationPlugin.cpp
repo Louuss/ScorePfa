@@ -87,9 +87,9 @@ void ApplicationPlugin::generate()
   AbletonDocument abletonDoc;
 
   loadDocument(docXml, abletonDoc);
-  createTrack(base, *firstScenario, m, this->context, 10,0.02);
+  createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
 
-  createTrack(base, *firstScenario, m, this->context, 10,0.1);
+  //createTrack(base, *firstScenario, m, this->context, 10,0.1,abletonDoc.midiTracks[0].midiClipEvents[0]);
 
   m.commit();
 

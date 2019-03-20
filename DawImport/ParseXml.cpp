@@ -84,7 +84,7 @@ QDomElement getMidiClip(QDomElement& slot){
   return getElement(slot, args);
 }
 
-int loadNotes(QDomElement& keyTrack, vector<Midi::NoteData>& notes, uint8_t midiKeyValue){
+int loadNotes(QDomElement& keyTrack, vector<MidiNote>& notes, uint8_t midiKeyValue){
   QDomNodeList notesListXml = getNotes(keyTrack);
 
   for (int i = 0; i < notesListXml.length(); i++) {
@@ -143,15 +143,18 @@ int loadMidiClip(QDomElement& midiClipXml, MidiClip& midiClip){
     loadNotes(a, midiClip.midiNotes, midiKeyValue);
     double start = stod(midiClipXml.firstChildElement("CurrentStart").attributes().item(0).nodeValue().toStdString());
     double end = stod(midiClipXml.firstChildElement("CurrentEnd").attributes().item(0).nodeValue().toStdString());;
-    double startRelative = stod(midiClipXml.firstChildElement("Loop").firstChildElement("StartRelative").attributes().item(0).nodeValue().toStdString());;
+    double startRelative = stod(midiClipXml.firstChildElement("Loop").firstChildElement("StartRelative").attributes().item(0).nodeValue().toStdString());
+    double clipLength = stod(midiClipXml.firstChildElement("Loop").firstChildElement("LoopEnd").attributes().item(0).nodeValue().toStdString());
 
     midiClip.start = start;
     midiClip.end = end;
     midiClip.startRelative = startRelative;
+    midiClip.clipLength = clipLength;
 
     cout << start << endl;
     cout << end << endl;
     cout << startRelative << endl;
+    cout << clipLength << endl;
   }
 
   cout << "-------------------------" << endl;

@@ -26,13 +26,16 @@ struct MidiNote{
   double duration;
   uint8_t pitch;
   uint8_t velocity;
-{
+  MidiNote(double s, double d, uint8_t p, uint8_t v):start(s), duration(d), pitch(p), velocity(v){};
+
+};
 
 struct MidiClip{
   std::vector<MidiNote> midiNotes;
   double start;
   double end;
   double startRelative;
+  double clipLength;
 };
 
 struct ClipSlot{
@@ -53,8 +56,6 @@ struct AudioTrack{
 struct AbletonDocument{
   std::vector<MidiTrack> midiTracks;
   std::vector<AudioTrack> audioTracks;
-
-
 };
 
 #endif

@@ -9,13 +9,46 @@
 
 
 
+
+QTime getQtime(double time){
+  QTime t(0,0,0);
+  t = t.addSecs((int)time);
+  t = t.addMSecs((int)(time/1000));
+  return t;
+}
+
+Scenario::StateModel& createMidiClipEvent(const Scenario::ProcessModel& track,
+                        Scenario::Command::Macro& macro,
+                        Scenario::StateModel& startNode,
+                        MidiClip & midiClip)
+{
+
+  using namespace std::literals;
+
+  QTime loopLength = getQtime(midiClip.end - midiClip.start);
+  QTime clipLength = getQtime(midiClip.clipLength);
+  double y = 0.02;
+  auto& interval = macro.createIntervalAfter(track, startNode.id(), {2s, y});;
+
+  //auto& midi = macro.createProcessInNewSlot<Midi::ProcessModel>(interval, {});
+
+  //macro.submit(new Midi::ReplaceNotes(midi, convertToScoreNotes(midiClip.midiNotes), 0, 127, clipLength));
+
+  auto& endNode = Scenario::endState(interval, track);
+
+  //const auto& interval2 = macro.createIntervalAfter(track, endNode.id(), {clipLength, y});;
+
+  return endNode;
+}
+
 void createTrack(
     const Scenario::ScenarioDocumentModel& root,
     const Scenario::ProcessModel& scenar,
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context,
     double length,
-    double y)
+    double y,
+    MidiClip & midiClip)
 {
   using namespace std::literals;
   auto& start1 = macro.createState(scenar, scenar.startEvent().id(), y);
@@ -30,25 +63,40 @@ void createTrack(
   //Ajoutons un premier process
   auto& track = macro.createProcessInNewSlot<Scenario::ProcessModel>(interval1, {});
 
+
 //////////////////////////////////////////////////
 
   auto& start2 = macro.createState(track, track.startEvent().id(), y);
 
-  const auto& [tt2, ee2, end2] = macro.createDot(track, {2s, y});
+  auto& end2 = createMidiClipEvent(track,macro,start2,midiClip);
 
-  const auto& interval2 = macro.createInterval(track, start2.id(), end2.id());
+  //createMidiClipEvent(track,macro,end2,midiClip)
+
+  auto& interval = macro.createIntervalAfter(track, end2.id(), {5s, y});
+
+  auto& end3 = Scenario::endState(interval, track);
+  {
+  auto& interval4 = macro.createIntervalAfter(track, end3.id(), {7s, y});
+
+  auto& end5 = Scenario::endState(interval4, track);
+
+  auto& interval5 = macro.createIntervalAfter(track, end5.id(), {9s, y});
+  }
+  //const auto& [tt2, ee2, end2] = macro.createDot(track, {2s, y});
+
+  //const auto& interval2 = macro.createInterval(track, start2.id(), end2.id());
 
   //Ajoutons un premier process
-  auto& midi = macro.createProcessInNewSlot<Midi::ProcessModel>(interval2, {});
+  //auto& midi = macro.createProcessInNewSlot<Midi::ProcessModel>(interval2, {});
 
 
 ///////////////////////////////////////////////////
 
   //const auto& [ttt2, eee2, end3] = macro.createDot(track, {2s, y});
 
-  const auto& interval3 = macro.createIntervalAfter(track, end2.id(), {5000ms, y});;
+  //const auto& interval3 = macro.createIntervalAfter(track, end2.id(), {5000ms, y});;
 
-  const auto& [tttt2, eeee2, end3] = macro.createDot(track, {5000ms, y});
+  //const auto& [tttt2, eeee2, end3] = macro.createDot(track, {5000ms, y});
 
 //const auto& interval4= macro.createInterval(track, end3.id(), end4.id());
 //Ajoutons un premier process
@@ -59,9 +107,9 @@ void createTrack(
 
 }
 
-std::vector<NoteData> convertToScoreNotes(std::vector<MidiNote> midiNotes){
-  std::vector<NoteData> scoreNotes;
-  for (int i=0; i<midiNotes.length; i++){
+std::vector<Midi::NoteData> convertToScoreNotes(std::vector<MidiNote> midiNotes){
+  std::vector<Midi::NoteData> scoreNotes;
+  for (int i=0; i<midiNotes.size(); i++){
     MidiNote note = midiNotes[i];
     scoreNotes.emplace_back(note.start, note.duration, note.pitch, note.velocity);
   }
@@ -92,7 +140,7 @@ void createMidiClip(
   /////////////////////////////////////////////////////////////////////////////
 
   /////////////////////////////////////////////////////////////////////////////
-  macro.submit(new Midi::ReplaceNotes(midi, convertToScoreNotes(midiClip.midiNotes), 55, 85, 10000ms));
+  macro.submit(new Midi::ReplaceNotes(midi, convertToScoreNotes(midiClip.midiNotes), 0, 127, 10000ms));
 
 
   // Et un autre
