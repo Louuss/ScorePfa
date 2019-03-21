@@ -38,10 +38,10 @@ struct MidiClipEvent:ClipEvent{
   std::vector<MidiNote> midiNotes;
 };
 
-struct Track{
+strcut Track{
   std::string trackName;
   std::vector<std::variant<AudioClipEvent, MidiClipEvent>> clipEvents;
-};
+}
 
 struct MidiTrack:Track{
   //std::vector<MidiClipEvent> midiClipEvents;
@@ -57,7 +57,6 @@ struct AudioTrack:Track{
 
 struct AbletonDocument{
   std::vector<std::variant<AudioTrack, MidiTrack>> tracks;
-
 };
 
 #endif
