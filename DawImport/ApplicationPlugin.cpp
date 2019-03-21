@@ -87,17 +87,12 @@ void ApplicationPlugin::generate()
   if (liveFile.exec())
     {
       QString liveFilePath = liveFile.selectedFiles().first();
-      //std::cout<< liveFilePath.toStdString() << std::endl;
 
-
-      //QFile file(PLUGIN_SOURCE_DIR "/DawImport/resources/test.xml");
       QFile file(liveFilePath);
       if (!file.open(QIODevice::ReadOnly)){// || !doc.setContent(&file)){
-          //std::cout << "ERROR: error oppenning xml file" << std::endl
         }
       QByteArray input = file.readAll();
       QByteArray output;
-      //QByteArray output;
       gzipDecompress(input , output);
 
       QDomDocument docXml;
@@ -108,8 +103,6 @@ void ApplicationPlugin::generate()
 
     AbletonDocumentLoader(docXml, abletonDoc);
     //createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
-
-    //createTrack(base, *firstScenario, m, this->context, 10,0.1,abletonDoc.midiTracks[0].midiClipEvents[0]);
 
     m.commit();
 

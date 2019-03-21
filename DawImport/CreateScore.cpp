@@ -182,16 +182,6 @@ void createMidiClip(
 
 
 
-
-
-
-
-
-
-
-
-
-
 void createAudioClip(
     const Scenario::ScenarioDocumentModel& root,
     const Scenario::ProcessModel& scenar,
