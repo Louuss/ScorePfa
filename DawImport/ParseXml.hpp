@@ -10,6 +10,10 @@
 using namespace std;
 QDomNodeList getNodes(QDomElement& n, QStringList args);
 QDomElement getElement(QDomElement& n, QStringList args);
+QDomNodeList getClipEvents(QDomElement& elem);
+QDomNodeList getList(QDomDocument& doc, QString str);
+QDomNodeList getList(QDomElement& elem, QString str);
+/*
 QDomNodeList getMidiTracks(QDomDocument& doc);
 QDomNodeList getAudioTracks(QDomDocument& doc);
 QDomNodeList getSlots(QDomElement& track);
@@ -17,7 +21,7 @@ QDomNodeList getAudioClipEvents(QDomElement& track);
 QDomNodeList getMidiClipEvents(QDomElement& track);
 QDomNodeList getKeyTrack(QDomElement& midiClip);
 QDomNodeList getNotes(QDomElement& keyTrack);
-QDomElement getMidiClip(QDomElement& slot);
+*/
 int loadNotes(QDomElement& keyTrack, vector<Midi::NoteData>& notes, Midi::midi_size_t midiKeyValue);
 
 int loadAudioClip(QDomElement& audioClipXml, AudioClip& audioClip);
