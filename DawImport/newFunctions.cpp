@@ -17,10 +17,10 @@ QDomNodeList getList(QDomElement& elem, QString str){
 
 QDomNodeList getClipEvents(QDomElement& elem){
   //get type (audio or midi) and call getList accordingly
-  QDomElement type = elem.firstChildElement();
-  if(type.hasAttribute("AudioTrack")){
+
+  if(elem.tagName() == "AudioTrack"){
     return getList(elem, PATH_AUDIO_TRACKS);
   }
-  else if (type.hasAttribute("MidiTrack")){
+  else if (elem.tagName() == "MidiTrack"){
     return getList(elem, PATH_MIDI_TRACKS);
 }

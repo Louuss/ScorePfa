@@ -8,15 +8,13 @@ set(HDRS
     DawImport/ApplicationPlugin.hpp
     DawImport/ParseStructs.hpp
     DawImport/Structs.hpp
-    DawImport/CreateScore.hpp
-    DawImport/gzipSupport.hpp
+    DawImport/getXmlElements.hpp
     score_addon_dawimport.hpp
 )
 set(SRCS
     DawImport/ApplicationPlugin.cpp
     DawImport/ParseStructs.cpp
-    DawImport/CreateScore.cpp
-    DawImport/gzipSupport.cpp
+    DawImport/getXmlElements.cpp
     score_addon_dawimport.cpp
 )
 

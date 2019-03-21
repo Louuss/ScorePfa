@@ -1,5 +1,6 @@
 #ifndef GZIP_SUPPORT
 #define GZIP_SUPPORT
+
 #include <zlib.h>
 #include <QByteArray>
 

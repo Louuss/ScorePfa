@@ -26,87 +26,88 @@
 
 #include "Structs.hpp"
 #include "ParseStructs.hpp"
-#include "CreateScore.hpp"
+
 #include "gzipSupport.hpp"
 
 
 namespace DawImport
 {
 
-static void generateScore(
+  static void generateScore(
     const Scenario::ScenarioDocumentModel& root,
     const Scenario::ProcessModel& scenar,
     Scenario::Command::Macro& macro,
     const score::GUIApplicationContext& context)
-{
-
-
-}
-
-
-ApplicationPlugin::ApplicationPlugin(const score::GUIApplicationContext& app):
-    score::GUIApplicationPlugin{app}
-{
-  m_generate = new QAction{tr("Generate a score"), nullptr};
-  connect(m_generate, &QAction::triggered, this, &ApplicationPlugin::generate);
-}
-
-score::GUIElements ApplicationPlugin::makeGUIElements()
-{
-    auto& m = context.menus.get().at(score::Menus::Export());
-    QMenu* menu = m.menu();
-    menu->addAction(m_generate);
-    return {};
-}
-
-void ApplicationPlugin::generate()
-{
-  auto doc = currentDocument();
-  if(!doc)
-      return;
-
-
-  Scenario::ScenarioDocumentModel& base = score::IDocument::get<Scenario::ScenarioDocumentModel>(*doc);
-
-  const auto& baseInterval = base.baseScenario().interval();
-  if(baseInterval.processes.size() == 0)
-      return;
-
-  auto firstScenario = dynamic_cast<Scenario::ProcessModel*>(&*baseInterval.processes.begin());
-  if(!firstScenario)
-      return;
-
-  Scenario::Command::Macro m{new GenerateAScore, doc->context()};
-
-
-  QString caption = QString::fromStdString("Import a document");
-  QString filter = QString::fromStdString("Live Files (*.als)");
-  QFileDialog liveFile{nullptr, caption, QString(), filter};
-  liveFile.setFileMode(QFileDialog::ExistingFile);
-
-  if (liveFile.exec())
     {
-      QString liveFilePath = liveFile.selectedFiles().first();
 
-      QFile file(liveFilePath);
-      if (!file.open(QIODevice::ReadOnly)){// || !doc.setContent(&file)){
-        }
-      QByteArray input = file.readAll();
-      QByteArray output;
-      gzipDecompress(input , output);
-
-      QDomDocument docXml;
-      docXml.setContent(output);
-
-
-    AbletonDocument abletonDoc;
-
-    AbletonDocumentLoader(docXml, abletonDoc);
-    //createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
-
-    m.commit();
 
     }
-  }
+
+
+    ApplicationPlugin::ApplicationPlugin(const score::GUIApplicationContext& app):
+    score::GUIApplicationPlugin{app}
+    {
+      m_generate = new QAction{tr("Generate a score"), nullptr};
+      connect(m_generate, &QAction::triggered, this, &ApplicationPlugin::generate);
+    }
+
+    score::GUIElements ApplicationPlugin::makeGUIElements()
+    {
+      auto& m = context.menus.get().at(score::Menus::Export());
+      QMenu* menu = m.menu();
+      menu->addAction(m_generate);
+      return {};
+    }
+
+    void ApplicationPlugin::generate()
+    {
+      /*auto doc = currentDocument();
+      if(!doc)
+      return;
+
+
+      Scenario::ScenarioDocumentModel& base = score::IDocument::get<Scenario::ScenarioDocumentModel>(*doc);
+
+      const auto& baseInterval = base.baseScenario().interval();
+      if(baseInterval.processes.size() == 0)
+      return;
+
+      auto firstScenario = dynamic_cast<Scenario::ProcessModel*>(&*baseInterval.processes.begin());
+      if(!firstScenario)
+      return;
+
+      Scenario::Command::Macro m{new GenerateAScore, doc->context()};
+
+
+      QString caption = QString::fromStdString("Import a document");
+      QString filter = QString::fromStdString("Live Files (*.als)");
+      QFileDialog liveFile{nullptr, caption, QString(), filter};
+      liveFile.setFileMode(QFileDialog::ExistingFile);
+
+      if (liveFile.exec())
+      {
+        QString liveFilePath = liveFile.selectedFiles().first();
+
+        QFile file(liveFilePath);
+        if (!file.open(QIODevice::ReadOnly)){}
+
+        QByteArray input = file.readAll();
+        QByteArray output;
+        gzipDecompress(input , output);
+
+        QDomDocument docXml;
+        docXml.setContent(output);
+
+
+        AbletonDocument abletonDoc;
+
+        AbletonDocumentLoader ADL;
+        ADL.loadAbletonDocument(docXml, abletonDoc);
+        //createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
+
+        m.commit();
+
+      }*/
+    }
 
 }
