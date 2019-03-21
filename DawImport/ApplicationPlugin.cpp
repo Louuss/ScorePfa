@@ -85,50 +85,37 @@ void ApplicationPlugin::generate()
   liveFile.setFileMode(QFileDialog::ExistingFile);
 
   if (liveFile.exec())
-  {
-    QString liveFilePath = liveFile.selectedFiles().first();
-    //std::cout<< liveFilePath.toStdString() << std::endl;
+    {
+      QString liveFilePath = liveFile.selectedFiles().first();
+      //std::cout<< liveFilePath.toStdString() << std::endl;
 
 
-    //QFile file(PLUGIN_SOURCE_DIR "/DawImport/resources/test.xml");
-    QFile file(liveFilePath);
-    if (!file.open(QIODevice::ReadOnly)){// || !doc.setContent(&file)){
-        //std::cout << "ERROR: error oppenning xml file" << std::endl
-      }
-    QByteArray input = file.readAll();
-    QByteArray output;
-    //QByteArray output;
-    gzipDecompress(input , output);
+      //QFile file(PLUGIN_SOURCE_DIR "/DawImport/resources/test.xml");
+      QFile file(liveFilePath);
+      if (!file.open(QIODevice::ReadOnly)){// || !doc.setContent(&file)){
+          //std::cout << "ERROR: error oppenning xml file" << std::endl
+        }
+      QByteArray input = file.readAll();
+      QByteArray output;
+      //QByteArray output;
+      gzipDecompress(input , output);
 
-    QDomDocument docXml;
-    docXml.setContent(output);
+      QDomDocument docXml;
+      docXml.setContent(output);
 
-    /*
-  QDomDocument docXml;
-  QFile file(PLUGIN_SOURCE_DIR "/DawImport/resources/testAll.xml");
-  if (!file.open(QIODevice::ReadOnly) || !docXml.setContent(&file)){
-      //std::cout << "ERROR: error oppenning xml file" << std::endl
+
+    AbletonDocument abletonDoc;
+
+    loadDocument(docXml, abletonDoc);
+    createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
+
+    //createTrack(base, *firstScenario, m, this->context, 10,0.1,abletonDoc.midiTracks[0].midiClipEvents[0]);
+
+    m.commit();
+
+
+
     }
-
-*/
-  AbletonDocument abletonDoc;
-
-  loadDocument(docXml, abletonDoc);
-  createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
-
-  //createTrack(base, *firstScenario, m, this->context, 10,0.1,abletonDoc.midiTracks[0].midiClipEvents[0]);
-
-  m.commit();
-
-  /*createAudioClip(base, *firstScenario, m, this->context, abletonDoc.audioTracks[0].audioClipEvents[0]);
-  std::cout<<"kjvvovvjov"<<std::endl;
-  Scenario::Command::Macro m2{new GenerateAScore, doc->context()};
-
-  createMidiClip(base, *firstScenario, m2, this->context, abletonDoc.midiTracks[0].midiClipEvents[0]);
-*/
-
-}
-
-
+  }
 
 }
