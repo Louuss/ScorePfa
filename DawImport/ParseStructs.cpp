@@ -1,3 +1,5 @@
+#include "ParseStucts.hpp"
+
 struct ClipEventLoader{
   QDomElement& clipXml;
 
@@ -52,7 +54,7 @@ struct ClipEventLoader{
 };
 
 struct TrackLoader{
-  QDomElement& clipEventXml;
+  QDomElement& trackXml;
   int trackType;
   void loadTrack(Track& track){
     QDomNodeList clipEventsXml = getClipEvents(trackXml);
@@ -83,7 +85,30 @@ struct TrackLoader{
 };
 
 struct AbletonDocumentLoader{
-  AbletonDocument& loadAbletonDocument(AbletonDocument abletonDoc){
+  void loadTracks(QDomDocument& docXml,
+                  std::vector<std::variant<AudioTrack,
+                  MidiTrack>>& tracks,
+                  QString path,
+                  int trackType){
 
+    QDomNodeList tracksXml = getList(docXml, path);
+    for (int i = 0; i < tracksXml.length(); i++) {
+      if(trackType == 1){
+        tracks.emplace_back(AudioTrack());
+      }else if(trackType == 2){
+        tracks.emplace_back(MidiTrack());
+      }
+
+      QDomElement a = tracksXml.item(i).toElement();
+      std::visit(TrackLoader{a}, tracks.back());
+
+    }
+
+  }
+
+
+  void loadAbletonDocument(QDomDocument& docXml, AbletonDocument& abletonDoc){
+    loadTracks(docXml, abletonDoc.tracks, PATH_MIDI_TRACKS, 2);
+    loadTracks(docXml, abletonDoc.tracks, PATH_AUDIO_TRACKS, 1);
   }
 };

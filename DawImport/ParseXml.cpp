@@ -215,12 +215,10 @@ int loadAudioTracks(QDomDocument& docXml, vector<AudioTrack>& audioTracks){
   QDomNodeList audioTracksXml = getAudioTracks(docXml);
   std::cout<< "NB Audio Tracks: " << audioTracksXml.length() << std::endl;
   for (int i = 0; i < audioTracksXml.length(); i++) {
-    cout << "---------AUDIOTRACK--------" << endl;
 
     audioTracks.emplace_back();
     QDomElement a = audioTracksXml.item(i).toElement();
     loadAudioClipEvents(a, audioTracks[i].audioClipEvents);
-    cout << "--------------------------" << endl;
 
   }
 
