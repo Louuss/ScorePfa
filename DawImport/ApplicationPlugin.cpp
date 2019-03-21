@@ -27,6 +27,7 @@
 #include "Structs.hpp"
 #include "ParseXml.hpp"
 #include "CreateScore.hpp"
+#include "gzipSupport.hpp"
 
 
 namespace DawImport
@@ -77,13 +78,39 @@ void ApplicationPlugin::generate()
 
   Scenario::Command::Macro m{new GenerateAScore, doc->context()};
 
+
+  QString caption = QString::fromStdString("Import a document");
+  QString filter = QString::fromStdString("Live Files (*.als)");
+  QFileDialog liveFile{nullptr, caption, QString(), filter};
+  liveFile.setFileMode(QFileDialog::ExistingFile);
+
+  if (liveFile.exec())
+  {
+    QString liveFilePath = liveFile.selectedFiles().first();
+    //std::cout<< liveFilePath.toStdString() << std::endl;
+
+
+    //QFile file(PLUGIN_SOURCE_DIR "/DawImport/resources/test.xml");
+    QFile file(liveFilePath);
+    if (!file.open(QIODevice::ReadOnly)){// || !doc.setContent(&file)){
+        //std::cout << "ERROR: error oppenning xml file" << std::endl
+      }
+    QByteArray input = file.readAll();
+    QByteArray output;
+    //QByteArray output;
+    gzipDecompress(input , output);
+
+    QDomDocument docXml;
+    docXml.setContent(output);
+
+    /*
   QDomDocument docXml;
   QFile file(PLUGIN_SOURCE_DIR "/DawImport/resources/testAll.xml");
   if (!file.open(QIODevice::ReadOnly) || !docXml.setContent(&file)){
       //std::cout << "ERROR: error oppenning xml file" << std::endl
     }
 
-
+*/
   AbletonDocument abletonDoc;
 
   loadDocument(docXml, abletonDoc);
