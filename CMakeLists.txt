@@ -10,14 +10,14 @@ set(HDRS
     DawImport/ParseXml.hpp
     DawImport/Structs.hpp
     DawImport/CreateScore.hpp
-    DawImport/gzipSupport.hpp
+
     score_addon_dawimport.hpp
 )
 set(SRCS
     DawImport/ApplicationPlugin.cpp
     DawImport/ParseXml.cpp
     DawImport/CreateScore.cpp
-    DawImport/gzipSupport.cpp
+
     score_addon_dawimport.cpp
 )
 
