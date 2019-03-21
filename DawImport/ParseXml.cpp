@@ -33,6 +33,7 @@ QDomElement getElement(QDomElement& n, QStringList args){
   return currentElement;
 }
 
+/*
 QDomNodeList getMidiTracks(QDomDocument& doc){
   QString str = "LiveSet->Tracks->MidiTrack";
   QStringList args = str.split("->");
@@ -77,11 +78,24 @@ QDomNodeList getNotes(QDomElement& keyTrack){
   QStringList args = str.split("->");
   return getNodes(keyTrack, args);
 }
+*/
 
-QDomElement getMidiClip(QDomElement& slot){
-  QString str = "ClipSlot->Value->MidiClip";
-  QStringList args = str.split("->");
-  return getElement(slot, args);
+QDomNodeList getList(QDomDocument& doc, QString str){
+  return getNodes(doc.firstChildElement("Ableton"), str.split("->"));
+}
+
+QDomNodeList getList(QDomElement& elem, QString str){
+  return getNodes(elem, str.split("->"));
+}
+
+QDomNodeList getClipEvents(QDomElement& elem){
+  //get type (audio or midi) and call getList accordingly
+  QDomElement type = elem.firstChildElement();
+  if(type.hasAttribute("AudioTrack")){
+    return getList(elem, PATH_AUDIO_TRACKS);
+  }
+  else if (type.hasAttribute("MidiTrack")){
+    return getList(elem, PATH_MIDI_TRACKS);
 }
 
 int loadNotes(QDomElement& keyTrack, vector<MidiNote>& notes, uint8_t midiKeyValue){
