@@ -9,8 +9,10 @@
 #ifndef STRUCTS
 #define STRUCTS
 
-#include<stdlib.h>
-#include<vector>
+#include <string>
+#include <stdlib.h>
+#include <vector>
+#include <variant>
 
 struct MidiNote{
   double start;
@@ -18,7 +20,6 @@ struct MidiNote{
   uint8_t pitch;
   uint8_t velocity;
   MidiNote(double s, double d, uint8_t p, uint8_t v):start(s), duration(d), pitch(p), velocity(v){};
-
 };
 
 
@@ -40,7 +41,7 @@ struct MidiClipEvent:ClipEvent{
 
 struct Track{
   std::string trackName;
-  std::vector<std::variant<AudioClipEvent, MidiClipEvent>> clipEvents;
+  std::vector<std::variant<AudioClipEvent, MidiClipEvent> > clipEvents;
 };
 
 struct MidiTrack:Track{
@@ -56,7 +57,7 @@ struct AudioTrack:Track{
 
 
 struct AbletonDocument{
-  std::vector<std::variant<AudioTrack, MidiTrack>> tracks;
+  std::vector<std::variant<AudioTrack, MidiTrack> > tracks;
 };
 
 #endif

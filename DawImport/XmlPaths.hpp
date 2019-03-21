@@ -1,7 +1,7 @@
 #ifndef XML_PATHS
 #define XML_PATHS
 
-#include <Qstring>
+#include <QString>
 
 QString PATH_MIDI_TRACKS        = "LiveSet->Tracks->MidiTrack";
 QString PATH_AUDIO_TRACKS       = "LiveSet->Tracks->AudioTrack";
