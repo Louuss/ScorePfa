@@ -61,13 +61,13 @@ struct TrackLoader{
 
     for (int i = 0; i < clipEventsXml.length(); i++) {
       QDomElement a = clipEventsXml.item(i).toElement();
-      ClipEventVisitor cev;
+
       if (trackType == 1){
         track.clipEvents.push_back(MidiClipEvent());
       }else if (trackType == 2){
         track.clipEvents.push_back(AudioClipEvent());
       }
-      cev.loadClipEvent(track.clipEvents.back(), a);
+      std::visit(ClipEventLoader{a}, track.clipEvents.back());
     }
 
   }
