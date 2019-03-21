@@ -11,15 +11,6 @@
 
 #include<stdlib.h>
 #include<vector>
-#include <Midi/MidiNote.hpp>
-#include <QString>
-
-struct AudioClip{
-  QString path;
-  double start;
-  double end;
-  double startRelative;
-};
 
 struct MidiNote{
   double start;
@@ -30,32 +21,43 @@ struct MidiNote{
 
 };
 
-struct MidiClip{
-  std::vector<MidiNote> midiNotes;
+
+struct ClipEvent{
   double start;
   double end;
   double startRelative;
   double clipLength;
 };
 
-struct ClipSlot{
-  MidiClip midiClip;
+struct AudioClipEvent:ClipEvent{
+  std::string path;
 };
 
-struct MidiTrack{
-  std::vector<ClipSlot> clipSlots;
-  std::vector<MidiClip> midiClipEvents;
+
+struct MidiClipEvent:ClipEvent{
+  std::vector<MidiNote> midiNotes;
+};
+
+strcut Track{
+  std::string trackName;
+  std::vector<std::variant<AudioClipEvent, MidiClipEvent>> clipEvents;
+}
+
+struct MidiTrack:Track{
+  //std::vector<MidiClipEvent> midiClipEvents;
 
 };
 
-struct AudioTrack{
-  std::vector<AudioClip> audioClipEvents;
+struct AudioTrack:Track{
+  //std::vector<AudioClipEvent> audioClipEvents;
 
 };
+
+
 
 struct AbletonDocument{
-  std::vector<MidiTrack> midiTracks;
-  std::vector<AudioTrack> audioTracks;
+  std::vector<std::variant<AudioTrack, MidiTrack>> tracks;
+
 };
 
 #endif
