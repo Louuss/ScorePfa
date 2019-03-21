@@ -1,5 +1,4 @@
 #include "gzipSupport.hpp"
-return "ljblj";}
 bool gzipDecompress(QByteArray input, QByteArray &output){
   // Prepare output
   output.clear();

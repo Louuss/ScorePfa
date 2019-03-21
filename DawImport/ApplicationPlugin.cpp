@@ -61,7 +61,7 @@ namespace DawImport
 
     void ApplicationPlugin::generate()
     {
-      /*auto doc = currentDocument();
+      auto doc = currentDocument();
       if(!doc)
       return;
 
@@ -107,7 +107,7 @@ namespace DawImport
 
         m.commit();
 
-      }*/
+      }
     }
 
 }
