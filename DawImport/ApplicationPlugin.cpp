@@ -29,6 +29,8 @@
 
 #include "gzipSupport.hpp"
 
+#include "Debug.hpp"
+
 
 namespace DawImport
 {
@@ -104,6 +106,7 @@ namespace DawImport
         AbletonDocumentLoader ADL;
         ADL.loadAbletonDocument(docXml, abletonDoc);
         //createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
+        displayAbletonDoc(abletonDoc);
 
         m.commit();
 

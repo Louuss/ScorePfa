@@ -9,7 +9,6 @@ int ClipEventLoader::loadNotes(QDomElement& keyTrack, std::vector<MidiNote>& not
     double duration = stof(notesListXml.item(i).attributes().namedItem("Duration").nodeValue().toStdString());
     double time = stof(notesListXml.item(i).attributes().namedItem("Time").nodeValue().toStdString());
 
-    std::cout<<"hey'"<<std::endl;
     notes.emplace_back(time, duration, midiKeyValue, velocity);
 
   }
@@ -45,19 +44,17 @@ void ClipEventLoader::operator()(MidiClipEvent& midiClipEvent){
 
 void ClipEventLoader::operator()(AudioClipEvent& audioClipEvent){
   loadClipAtributes(audioClipEvent);
-  std::cout<<3<<std::endl;
-  QString name = clipXml.firstChildElement("SampleRef").firstChildElement("FileRef").firstChildElement("Name").attributes().item(0).nodeValue();
-  audioClipEvent.path = name.toStdString();
+  audioClipEvent.path = getPath(clipXml);
 
 }
 
 
 void TrackLoader::loadTrack(Track& track){
   QDomNodeList clipEventsXml = getClipEvents(trackXml);
-  std::cout<< "hey" << 1<<std::endl;
+
   for (int i = 0; i < clipEventsXml.length(); i++) {
     QDomElement a = clipEventsXml.item(i).toElement();
-    std::cout<<2<<std::endl;
+
     if (trackType == 1){
       track.clipEvents.push_back(MidiClipEvent());
     }else if (trackType == 2){
@@ -89,9 +86,9 @@ void AbletonDocumentLoader::loadTracks(
     std::cout<<tracksXml.length()<<std::endl;
     for (int i = 0; i < tracksXml.length(); i++) {
       if(trackType == 1){
-        tracks.emplace_back(AudioTrack());
+        tracks.push_back(AudioTrack());
       }else if(trackType == 2){
-        tracks.emplace_back(MidiTrack());
+        tracks.push_back(MidiTrack());
       }
 
       QDomElement a = tracksXml.item(i).toElement();

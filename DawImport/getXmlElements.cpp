@@ -29,11 +29,24 @@ QDomNodeList getClipEvents(QDomElement& elem){
   //get type (audio or midi) and call getList accordingly
   std::cout<< elem.tagName().toStdString() << std::endl;
   if(elem.tagName().toStdString() == "AudioTrack"){
-    return getList(elem, PATH_AUDIO_TRACKS);
+    return getList(elem, PATH_AUDIO_CLIP_EVENTS);
   }
   else if (elem.tagName().toStdString() == "MidiTrack"){
-    return getList(elem, PATH_MIDI_TRACKS);
+    return getList(elem, PATH_MIDI_CLIP_EVENTS);
   }
   QDomNodeList a;
   return a;
+}
+
+
+std::string getPath(QDomElement& clipEventXml){
+  QDomNodeList pathList = getList(clipEventXml, PATH_AUDIO_CLIP_PATH);
+  QString path;
+  for(int i = 0; i < pathList.size(); i++){
+    path += pathList.at(i).attributes().item(0).nodeValue();
+    path += "/";
+  }
+  path+= clipEventXml.firstChildElement("SampleRef").firstChildElement("FileRef").firstChildElement("Name").attributes().item(0).nodeValue();
+
+  return path.toStdString();
 }

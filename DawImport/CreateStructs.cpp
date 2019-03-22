@@ -10,18 +10,19 @@ struct ClipEventCreator {
 
   const Scenario::ProcessModel& scenar;
   Scenario::Command::Macro& macro;
+  Scenario::StateModel& startDot;
+  Scenario::StateModel& endDot;
 
     void createClipEvent(ClipEvent& ce)
       {
 
         constexpr double y = 0.02;
 
-        // Create starting and ending points
-        const auto& [t1, e1, s1] = macro.createDot(scenar, {ce.start, y});
-        const auto& [t2, e2, s2] = macro.createDot(scenar, {ce.end, y});
 
         // Create Interval
-        const auto& i1 = macro.createInterval(scenar, s1.id(), s2.id());
+        auto& interval = macro.createIntervalAfter(track, startNode.id(), {2s, y});;
+
+        endDot = Scenario::endState(interval, track);
 
         // Create a loop
         auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(i1, {});
