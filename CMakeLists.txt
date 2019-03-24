@@ -1,4 +1,4 @@
-project(score-addon-dawimport LANGUAGES CXX)
+project(score_addon_dawimport LANGUAGES CXX)
 
 # General initialization
 score_common_setup()
@@ -9,12 +9,16 @@ set(HDRS
     DawImport/ParseStructs.hpp
     DawImport/Structs.hpp
     DawImport/getXmlElements.hpp
+    DawImport/gzipSupport.hpp
+    DawImport/Debug.hpp
     score_addon_dawimport.hpp
 )
 set(SRCS
     DawImport/ApplicationPlugin.cpp
     DawImport/ParseStructs.cpp
     DawImport/getXmlElements.cpp
+    DawImport/Debug.cpp
+    DawImport/gzipSupport.cpp
     score_addon_dawimport.cpp
 )
 
