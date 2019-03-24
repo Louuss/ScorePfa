@@ -118,14 +118,11 @@ struct TrackCreator{
 
 struct AbletonDocumentCreator {
 
-  void createDoc(QDomDocument& docXml, const Scenario::ProcessModel& scenar, Scenario::Command::Macro& macro)
+  void createDoc( AbletonDocument aDoc, const Scenario::ProcessModel& scenar, Scenario::Command::Macro& macro)
   {
-      AbletonDocumentLoader aLoad {} ;
-      AbletonDocument aDoc {} ;
-      aLoad.loadAbletonDocument(docXml, aDoc);
+    std::cout << "Hihhihiiihishhshshshshshshshs" << endl;
 
       for (int i = 0; i < aDoc.tracks.size(); i++) {
-
         std::visit(TrackCreator{scenar,macro},  aDoc.tracks[i]);
 
       }
