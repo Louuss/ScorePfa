@@ -34,7 +34,8 @@ struct displayClipEvent {
 };
 
 void printTrackInfo(Track track) {
-  cout << "  " << track.trackName << endl;
+  cout << "  Name:" << track.name << endl;
+  cout << "  Length:" << track.length << endl;
   cout << "  ClipEvents" << endl;
   for(int i=0; i<track.clipEvents.size(); i++){
     std::visit(displayClipEvent{}, track.clipEvents[i]);
@@ -44,6 +45,7 @@ void printTrackInfo(Track track) {
 struct displayTrack {
   void operator()(MidiTrack t){
     cout << "  MidiTrack" << endl;
+    cout << "  VST: " << t.VST << endl;
     printTrackInfo(t);
   }
   void operator()(AudioTrack t){

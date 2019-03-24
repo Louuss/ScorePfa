@@ -40,13 +40,14 @@ struct MidiClipEvent:ClipEvent{
 };
 
 struct Track{
-  std::string trackName;
+  std::string name;
+  double length;
   std::vector<std::variant<AudioClipEvent, MidiClipEvent> > clipEvents;
 };
 
 struct MidiTrack:Track{
   //std::vector<MidiClipEvent> midiClipEvents;
-
+  std::string VST;
 };
 
 struct AudioTrack:Track{

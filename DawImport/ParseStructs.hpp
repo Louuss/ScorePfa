@@ -10,7 +10,7 @@
 
 struct ClipEventLoader{
   QDomElement& clipXml;
-
+  double end = 0;
   int loadNotes(QDomElement& keyTrack, std::vector<MidiNote>& notes, uint8_t midiKeyValue);
   void loadClipAtributes(ClipEvent& clipEvent);
   void operator()(MidiClipEvent& midiClipEvent);

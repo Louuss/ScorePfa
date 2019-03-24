@@ -22,12 +22,11 @@ void ClipEventLoader::loadClipAtributes(ClipEvent& clipEvent){
   double startRelative = stod(clipXml.firstChildElement("Loop").firstChildElement("StartRelative").attributes().item(0).nodeValue().toStdString());;
   double clipLength = stod(clipXml.firstChildElement("Loop").firstChildElement("LoopEnd").attributes().item(0).nodeValue().toStdString());
 
-
+  this->end=end;
   clipEvent.start = start;
   clipEvent.end = end;
   clipEvent.startRelative = startRelative;
   clipEvent.clipLength = clipLength;
-
 }
 
 void ClipEventLoader::operator()(MidiClipEvent& midiClipEvent){
@@ -51,27 +50,29 @@ void ClipEventLoader::operator()(AudioClipEvent& audioClipEvent){
 
 void TrackLoader::loadTrack(Track& track){
   QDomNodeList clipEventsXml = getClipEvents(trackXml);
+  double trackLength = 0;
 
   for (int i = 0; i < clipEventsXml.length(); i++) {
     QDomElement a = clipEventsXml.item(i).toElement();
-
     if (trackType == 1){
       track.clipEvents.push_back(MidiClipEvent());
     }else if (trackType == 2){
       track.clipEvents.push_back(AudioClipEvent());
     }
-    std::visit(ClipEventLoader{a}, track.clipEvents.back());
+    ClipEventLoader loader{a};
+    std::visit(loader, track.clipEvents.back());
+    trackLength = loader.end;
   }
-
+  track.length = trackLength;
 }
 
 void TrackLoader::operator()(MidiTrack& track){
-  trackType =1;
+  trackType = 1;
   loadTrack(track);
 }
 
 void TrackLoader::operator()(AudioTrack& track){
-  trackType =2;
+  trackType = 2;
   loadTrack(track);
 }
 
