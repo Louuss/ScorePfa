@@ -1,3 +1,5 @@
+#ifndef CREATE_STRUCK_HPP
+#define CREATE_STRUCK_HPP
 #include "Structs.hpp"
 #include <Scenario/Process/Algorithms/Accessors.hpp>
 #include <Scenario/Process/Algorithms/ContainersAccessors.hpp>
@@ -55,3 +57,6 @@ struct AbletonDocumentCreator {
                   Scenario::Command::Macro& macro);
 
 };
+
+
+#endif
