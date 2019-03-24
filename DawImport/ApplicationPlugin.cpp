@@ -109,11 +109,13 @@ namespace DawImport
         ADL.loadAbletonDocument(docXml, abletonDoc);
         //createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
         displayAbletonDoc(abletonDoc);
-        AbletonDocumentCreator ADC{};
-        ADC.createDoc(abletonDoc, *firstScenario, m);
+        std::cout << "Hihhihiiihishhshshshshshshshs" << std::endl;
+
+        //AbletonDocumentCreator ADC{};
+        //ADC.createDoc(abletonDoc, *firstScenario, m);
 
       }
-      //toby
+
     }
 
 }

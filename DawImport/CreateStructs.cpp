@@ -52,6 +52,9 @@ struct ClipEventCreator {
         //create the sound process with the path
         macro.createProcessInNewSlot<Media::Sound::ProcessModel>(loop.interval(), QString::fromStdString(audioClipEvent.path));
       }
+
+
+
       void operator()(MidiClipEvent& midiClipEvent)
       {
         constexpr double y = 0.02;
@@ -71,7 +74,6 @@ struct ClipEventCreator {
         // add notes
         new Midi::ReplaceNotes(midi, convertToScoreNotes(midiClipEvent.midiNotes), 0, 127, getQtime(midiClipEvent.end - midiClipEvent.start));
       }
-
   };
 
 
