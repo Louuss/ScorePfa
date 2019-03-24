@@ -33,46 +33,45 @@ constexpr double y = 0.02;
 
 void ClipEventCreator::operator()(AudioClipEvent& audioClipEvent)
 {
-std::cout<<"JE suis dans creer un clip  audio : " <<std::endl;
-constexpr double y = 0.02;
+    constexpr double y = 0.02;
 
-// Create Interval
-auto& in = macro.createIntervalAfter(scenar, startDot.id(), {getQtime(audioClipEvent.end), y});
-startDot = Scenario::endState(in, scenar);
-std::cout<<"JE sattentiondot: " <<std::endl;
-// Create a loop
-auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
+    // Create Interval
+    auto& in = macro.createIntervalAfter(scenar, startDot.id(), {getQtime(audioClipEvent.end), y});
 
-std::cout<<"Jprocess devrait etre created  " <<std::endl;
-//createClipEvent(audioClipEvent);
-//create the sound process with the path
-macro.createProcessInNewSlot<Media::Sound::ProcessModel>(loop.interval(), QString::fromStdString(audioClipEvent.path));
+
+    //startDot = Scenario::endState(in, scenar);
+
+
+    // Create a loop
+    auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
+
+    //createClipEvent(audioClipEvent);
+    //create the sound process with the path
+    macro.createProcessInNewSlot<Media::Sound::ProcessModel>(loop.interval(), QString::fromStdString(audioClipEvent.path));
 }
 
 
 void ClipEventCreator::operator()(MidiClipEvent& midiClipEvent)
 {
-constexpr double y = 0.02;
+    constexpr double y = 0.02;
 
-std::cout<<"JE suis dans creer un clip  midi : " <<std::endl;
-// Create Interval
-auto& in = macro.createIntervalAfter(scenar, startDot.id(), {getQtime(midiClipEvent.end), y});
-
-std::cout<<"JE sattentiondot: " <<std::endl;
-startDot = Scenario::endState(in, scenar);
-
-// Create a loop
-auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
+    // Create Interval
+    auto& in = macro.createIntervalAfter(scenar, startDot.id(), {getQtime(midiClipEvent.end), y});
 
 
+    //startDot = Scenario::endState(in, scenar);
 
-//  createClipEvent(midiClipEvent);
-// create the midi process
+    // Create a loop
+    auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
 
-std::cout<<"JE process inc : " <<std::endl;
-auto& midi = macro.createProcessInNewSlot<Midi::ProcessModel>(loop.interval(), {});
-// add notes
-new Midi::ReplaceNotes(midi, convertToScoreNotes(midiClipEvent.midiNotes), 0, 127, getQtime(midiClipEvent.end - midiClipEvent.start));
+
+
+    //  createClipEvent(midiClipEvent);
+    // create the midi process
+
+    auto& midi = macro.createProcessInNewSlot<Midi::ProcessModel>(loop.interval(), {});
+    // add notes
+    new Midi::ReplaceNotes(midi, convertToScoreNotes(midiClipEvent.midiNotes), 0, 127, getQtime(midiClipEvent.end - midiClipEvent.start));
 }
 
 
@@ -81,7 +80,6 @@ void TrackCreator::createTrack(Track tr)
     using namespace std::literals;
     // base
 
-      std::cout<<"JE Suis trackcreator : "  <<std::endl;
     constexpr double y = 0.02;
     auto& start1 = macro.createState(scenar, scenar.startEvent().id(), y);
     // ending dot
@@ -95,8 +93,6 @@ void TrackCreator::createTrack(Track tr)
 
     for(int i = 0; i<tr.clipEvents.size(); i++)
     {
-      //cec.createClipEvent(tr.clipEvents[i]);
-      std::cout<<"JE Sveux creer un clip : " << i <<std::endl;
       std::visit(cec,tr.clipEvents[i]);
     }
 }
