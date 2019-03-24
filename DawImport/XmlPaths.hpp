@@ -11,4 +11,8 @@ QString PATH_MIDI_CLIP_EVENTS   = "DeviceChain->MainSequencer->ClipTimeable->Arr
 QString PATH_KEY_TRACKS         = "Notes->KeyTracks->KeyTrack";
 QString PATH_NOTES              = "Notes->MidiNoteEvent";
 QString PATH_AUDIO_CLIP_PATH    = "SampleRef->FileRef->SearchHint->PathHint->RelativePathElement";
+QString PATH_AUDIO_CLIP_NAME    = "SampleRef->FileRef->Name";
+QString PATH_VST_NAME           = "DeviceChain->DeviceChain->Devices->PluginDevice->PluginDesc->VstPluginInfo->PlugName";
+QString PATH_TRACK_NAME         = "Name->EffectiveName";
+
 #endif
