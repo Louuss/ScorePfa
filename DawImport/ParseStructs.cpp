@@ -1,3 +1,11 @@
+/**
+ * [ClipEventLoader::loadNotes description]
+ * @param  keyTrack     [description]
+ * @param  notes        [description]
+ * @param  midiKeyValue [description]
+ * @return              [description]
+ */
+
 #include "ParseStructs.hpp"
 
 
@@ -5,9 +13,9 @@ int ClipEventLoader::loadNotes(QDomElement& keyTrack, std::vector<MidiNote>& not
   QDomNodeList notesListXml = getList(keyTrack, PATH_NOTES);
 
   for (int i = 0; i < notesListXml.length(); i++) {
-    uint8_t velocity = stoi(notesListXml.item(i).attributes().namedItem("Velocity").nodeValue().toStdString());
-    double duration = stof(notesListXml.item(i).attributes().namedItem("Duration").nodeValue().toStdString());
-    double time = stof(notesListXml.item(i).attributes().namedItem("Time").nodeValue().toStdString());
+    uint8_t velocity = stoi(getValue(notesListXml.item(i), "Velocity").toStdString());
+    double duration = stof(getValue(notesListXml.item(i), "Duration").toStdString())
+    double time = stof(getValue(notesListXml.item(i), "Time").toStdString())
 
     notes.emplace_back(time, duration, midiKeyValue, velocity);
 
@@ -17,10 +25,10 @@ int ClipEventLoader::loadNotes(QDomElement& keyTrack, std::vector<MidiNote>& not
 
 
 void ClipEventLoader::loadClipAtributes(ClipEvent& clipEvent){
-  double start = stod(clipXml.firstChildElement("CurrentStart").attributes().item(0).nodeValue().toStdString());
-  double end = stod(clipXml.firstChildElement("CurrentEnd").attributes().item(0).nodeValue().toStdString());;
-  double startRelative = stod(clipXml.firstChildElement("Loop").firstChildElement("StartRelative").attributes().item(0).nodeValue().toStdString());;
-  double clipLength = stod(clipXml.firstChildElement("Loop").firstChildElement("LoopEnd").attributes().item(0).nodeValue().toStdString());
+  double start = stod(getValue(notesListXml.item(i), "CurrentStart").toStdString();
+  double end = stod(getValue(notesListXml.item(i), "CurrentEnd").toStdString();
+  double startRelative = stod(getValue(notesListXml.item(i), "Loop->StartRelative").toStdString();
+  double clipLength = stod(getValue(notesListXml.item(i), "Loop->LoopEnd").toStdString();
 
   this->end=end;
   clipEvent.start = start;
