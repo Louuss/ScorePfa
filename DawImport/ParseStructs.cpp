@@ -112,6 +112,7 @@ void AbletonDocumentLoader::loadTracks(
 
 
 void AbletonDocumentLoader::loadAbletonDocument(QDomDocument& docXml, AbletonDocument& abletonDoc){
+    abletonDoc.BPM = stod(getItemValue(docXml, PATH_BPM_VALUE).toStdString());
     loadTracks(docXml, abletonDoc.tracks, PATH_MIDI_TRACKS, 2);
     loadTracks(docXml, abletonDoc.tracks, PATH_AUDIO_TRACKS, 1);
 }

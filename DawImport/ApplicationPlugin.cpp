@@ -30,7 +30,9 @@
 #include "gzipSupport.hpp"
 
 #include "Debug.hpp"
-//#include "CreateStructs.cpp"
+
+
+#include "CreateStructs.hpp"
 
 
 namespace DawImport
@@ -112,8 +114,8 @@ namespace DawImport
         std::cout<<" ~~~~~~~~~~AAAPPRES LE LOAD ~~~~~~~~~~"<< std::endl;
         displayAbletonDoc(abletonDoc);
         std::cout<<" ~~~~~~~///////////////////~~~~~~~~"<<std::endl;
-        //AbletonDocumentCreator adc ;
-        //adc.createDoc(abletonDoc, *firstScenario, m);
+        AbletonDocumentCreator adc ;
+        adc.createDoc(abletonDoc, *firstScenario, m);
 
       }
 

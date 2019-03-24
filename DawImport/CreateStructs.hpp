@@ -1,5 +1,5 @@
-#ifndef CREATE_STRUCK_HPP
-#define CREATE_STRUCK_HPP
+#ifndef CREATESTRUCTS
+#define CREATESTRUCTS
 #include "Structs.hpp"
 #include <Scenario/Process/Algorithms/Accessors.hpp>
 #include <Scenario/Process/Algorithms/ContainersAccessors.hpp>
@@ -32,7 +32,9 @@ struct ClipEventCreator {
 
   const Scenario::ProcessModel& scenar;
   Scenario::Command::Macro& macro;
-  Scenario::StateModel& startDot;
+  Id<Scenario::StateModel> startDot;
+  Id<Scenario::StateModel> endDot = Id<Scenario::StateModel>();
+  double prevEnd = 0;
 
   void createClipEvent(ClipEvent& ce);
   void operator()(AudioClipEvent& audioClipEvent);
@@ -45,7 +47,7 @@ struct TrackCreator{
 
   const Scenario::ProcessModel& scenar;
   Scenario::Command::Macro& macro;
-  void createTrack(Track tr);
+  void createTrack(Track& tr);
   void operator()(MidiTrack& track);
   void operator()(AudioTrack& track);
 

@@ -49,7 +49,11 @@ QString getItemValue(QDomElement& n, QString path){
 
   return currentElement.attributes().namedItem(args.at(args.length()-1)).nodeValue();
 }
+QString getItemValue(QDomDocument& doc, QString path){
+  QDomElement n = doc.firstChildElement("Ableton");
 
+  return getItemValue(n, path);
+}
 
 std::string getAudioClipPath(QDomElement& clipEventXml){
   QDomNodeList pathList = getList(clipEventXml, PATH_AUDIO_CLIP_PATH);

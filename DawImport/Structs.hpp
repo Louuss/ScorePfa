@@ -59,6 +59,7 @@ struct AudioTrack:Track{
 
 struct AbletonDocument{
   std::vector <std::variant<AudioTrack, MidiTrack>> tracks;
+  double BPM;
 };
 
 #endif

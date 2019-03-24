@@ -55,7 +55,7 @@ struct displayTrack {
 };
 
 void displayAbletonDoc(AbletonDocument& doc){
-
+  cout << "== BPM: " << doc.BPM << " ==" << endl;
   cout << "== Tracks: " << doc.tracks.size() << " ==" << endl;
   for(int i=0; i<doc.tracks.size(); i++){
     cout << "Track " << i << endl;
