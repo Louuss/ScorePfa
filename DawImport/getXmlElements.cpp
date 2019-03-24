@@ -38,15 +38,27 @@ QDomNodeList getClipEvents(QDomElement& elem){
   return a;
 }
 
+QString getValue(QDomElement& n, QString path){
+  QStringList args = path.split("->");
+  QDomElement currentElement = n;
 
-std::string getPath(QDomElement& clipEventXml){
+  for(int i=0;i<args.length()-1;i++){
+    cout<<args.at(i).toStdString()<<endl;
+    currentElement = currentElement.firstChildElement(args.at(i));
+  }
+
+  return currentElement.firstChildElement(args.at(args.length()-1)).attributes().item(0).nodeValue();
+}
+
+
+std::string getAudioClipPath(QDomElement& clipEventXml){
   QDomNodeList pathList = getList(clipEventXml, PATH_AUDIO_CLIP_PATH);
   QString path;
   for(int i = 0; i < pathList.size(); i++){
     path += pathList.at(i).attributes().item(0).nodeValue();
     path += "/";
   }
-  path+= clipEventXml.firstChildElement("SampleRef").firstChildElement("FileRef").firstChildElement("Name").attributes().item(0).nodeValue();
+  path+= getValue(clipEventXml, PATH_AUDIO_CLIP_NAME);
 
   return path.toStdString();
 }

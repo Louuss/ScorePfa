@@ -43,12 +43,13 @@ void ClipEventLoader::operator()(MidiClipEvent& midiClipEvent){
 
 void ClipEventLoader::operator()(AudioClipEvent& audioClipEvent){
   loadClipAtributes(audioClipEvent);
-  audioClipEvent.path = getPath(clipXml);
+  audioClipEvent.path = getAudioClipPath(clipXml);
 
 }
 
 
 void TrackLoader::loadTrack(Track& track){
+  track.name = getValue(trackXml, PATH_TRACK_NAME).toStdString();
   QDomNodeList clipEventsXml = getClipEvents(trackXml);
   double trackLength = 0;
 
@@ -69,6 +70,7 @@ void TrackLoader::loadTrack(Track& track){
 void TrackLoader::operator()(MidiTrack& track){
   trackType = 1;
   loadTrack(track);
+  track.VST = getValue(trackXml, PATH_VST_NAME).toStdString();
 }
 
 void TrackLoader::operator()(AudioTrack& track){
