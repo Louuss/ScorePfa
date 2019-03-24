@@ -14,9 +14,9 @@ int ClipEventLoader::loadNotes(QDomElement& keyTrack, std::vector<MidiNote>& not
 
   for (int i = 0; i < notesListXml.length(); i++) {
     QDomElement a = notesListXml.item(i).toElement();
-    uint8_t velocity = stoi(getValue(a, "Velocity").toStdString());
-    double duration = stod(getValue(a, "Duration").toStdString());
-    double time = stod(getValue(a, "Time").toStdString());
+    uint8_t velocity = stoi(getItemValue(a, "Velocity").toStdString());
+    double duration = stod(getItemValue(a, "Duration").toStdString());
+    double time = stod(getItemValue(a, "Time").toStdString());
 
     notes.emplace_back(time, duration, midiKeyValue, velocity);
 
@@ -26,10 +26,10 @@ int ClipEventLoader::loadNotes(QDomElement& keyTrack, std::vector<MidiNote>& not
 
 
 void ClipEventLoader::loadClipAtributes(ClipEvent& clipEvent){
-  double start = stod(getValue(clipXml, "CurrentStart->Value").toStdString());
-  double end = stod(getValue(clipXml, "CurrentEnd->Value").toStdString());
-  double startRelative = stod(getValue(clipXml, "Loop->StartRelative->Value").toStdString());
-  double clipLength = stod(getValue(clipXml, "Loop->LoopEnd->Value").toStdString());
+  double start = stod(getItemValue(clipXml, "CurrentStart->Value").toStdString());
+  double end = stod(getItemValue(clipXml, "CurrentEnd->Value").toStdString());
+  double startRelative = stod(getItemValue(clipXml, "Loop->StartRelative->Value").toStdString());
+  double clipLength = stod(getItemValue(clipXml, "Loop->LoopEnd->Value").toStdString());
 
   this->end=end;
   clipEvent.start = start;
@@ -58,7 +58,7 @@ void ClipEventLoader::operator()(AudioClipEvent& audioClipEvent){
 
 
 void TrackLoader::loadTrack(Track& track){
-  track.name = getValue(trackXml, PATH_TRACK_NAME).toStdString();
+  track.name = getItemValue(trackXml, PATH_TRACK_NAME).toStdString();
   QDomNodeList clipEventsXml = getClipEvents(trackXml);
   double trackLength = 0;
 
@@ -79,7 +79,7 @@ void TrackLoader::loadTrack(Track& track){
 void TrackLoader::operator()(MidiTrack& track){
   trackType = 1;
   loadTrack(track);
-  track.VST = getValue(trackXml, PATH_VST_NAME).toStdString();
+  track.VST = getItemValue(trackXml, PATH_VST_NAME).toStdString();
 }
 
 void TrackLoader::operator()(AudioTrack& track){

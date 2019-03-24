@@ -58,7 +58,7 @@ std::string getAudioClipPath(QDomElement& clipEventXml){
     path += pathList.at(i).attributes().item(0).nodeValue();
     path += "/";
   }
-  path+= getValue(clipEventXml, PATH_AUDIO_CLIP_NAME);
+  path+= getItemValue(clipEventXml, PATH_AUDIO_CLIP_NAME);
 
   return path.toStdString();
 }

@@ -11,7 +11,7 @@ set(HDRS
     DawImport/getXmlElements.hpp
     DawImport/gzipSupport.hpp
     DawImport/Debug.hpp
-    DawImport/CreateStructs.hpp
+    #DawImport/CreateStructs.hpp
     score_addon_dawimport.hpp
 )
 set(SRCS
@@ -20,7 +20,7 @@ set(SRCS
     DawImport/getXmlElements.cpp
     DawImport/Debug.cpp
     DawImport/gzipSupport.cpp
-    DawImport/CreateStructs.cpp
+    #DawImport/CreateStructs.cpp
     score_addon_dawimport.cpp
 )
 

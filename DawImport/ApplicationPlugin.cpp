@@ -30,9 +30,8 @@
 #include "gzipSupport.hpp"
 
 #include "Debug.hpp"
-#include "CreateStructs.hpp"
+//#include "CreateStructs.cpp"
 
-#include "CreateStructs.hpp"
 
 namespace DawImport
 {
@@ -109,20 +108,12 @@ namespace DawImport
         std::cout<<" ~~~~~~~~Avant le load~~~~~~~~~~~~"<<std::endl;
         ADL.loadAbletonDocument(docXml, abletonDoc);
         //createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
-<<<<<<< HEAD
-        displayAbletonDoc(abletonDoc);
-        std::cout << "Hihhihiiihishhshshshshshshshs" << std::endl;
-
-        //AbletonDocumentCreator ADC{};
-        //ADC.createDoc(abletonDoc, *firstScenario, m);
-=======
 
         std::cout<<" ~~~~~~~~~~AAAPPRES LE LOAD ~~~~~~~~~~"<< std::endl;
-        //displayAbletonDoc(abletonDoc);
+        displayAbletonDoc(abletonDoc);
         std::cout<<" ~~~~~~~///////////////////~~~~~~~~"<<std::endl;
-        AbletonDocumentCreator adc ;
-        adc.createDoc(abletonDoc, *firstScenario, m);
->>>>>>> b1e71da3f1ba550cf6bff21c6091fbdcd2f8e28b
+        //AbletonDocumentCreator adc ;
+        //adc.createDoc(abletonDoc, *firstScenario, m);
 
       }
 
