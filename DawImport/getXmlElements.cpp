@@ -38,7 +38,7 @@ QDomNodeList getClipEvents(QDomElement& elem){
   return a;
 }
 
-QString getValue(QDomElement& n, QString path){
+QString getItemValue(QDomElement& n, QString path){
   QStringList args = path.split("->");
   QDomElement currentElement = n;
 
@@ -47,7 +47,7 @@ QString getValue(QDomElement& n, QString path){
     currentElement = currentElement.firstChildElement(args.at(i));
   }
 
-  return currentElement.firstChildElement(args.at(args.length()-1)).attributes().item(0).nodeValue();
+  return currentElement.attributes().namedItem(args.at(args.length()-1)).nodeValue();
 }
 
 

@@ -25,3 +25,33 @@
 #include <QtXml/QtXml>
 
 #include "ParseStructs.hpp"
+
+struct ClipEventCreator {
+
+  const Scenario::ProcessModel& scenar;
+  Scenario::Command::Macro& macro;
+  Scenario::StateModel& startDot;
+
+  void createClipEvent(ClipEvent& ce);
+  void operator()(AudioClipEvent& audioClipEvent);
+  void operator()(MidiClipEvent& midiClipEvent);
+
+};
+
+
+struct TrackCreator{
+
+  const Scenario::ProcessModel& scenar;
+  Scenario::Command::Macro& macro;
+  void createTrack(Track tr);
+  void operator()(MidiTrack& track);
+  void operator()(AudioTrack& track);
+
+};
+
+struct AbletonDocumentCreator {
+  void createDoc( AbletonDocument aDoc,
+                  const Scenario::ProcessModel& scenar,
+                  Scenario::Command::Macro& macro);
+
+};

@@ -13,9 +13,10 @@ int ClipEventLoader::loadNotes(QDomElement& keyTrack, std::vector<MidiNote>& not
   QDomNodeList notesListXml = getList(keyTrack, PATH_NOTES);
 
   for (int i = 0; i < notesListXml.length(); i++) {
-    uint8_t velocity = stoi(getValue(notesListXml.item(i), "Velocity").toStdString());
-    double duration = stof(getValue(notesListXml.item(i), "Duration").toStdString())
-    double time = stof(getValue(notesListXml.item(i), "Time").toStdString())
+    QDomElement a = notesListXml.item(i).toElement();
+    uint8_t velocity = stoi(getValue(a, "Velocity").toStdString());
+    double duration = stod(getValue(a, "Duration").toStdString());
+    double time = stod(getValue(a, "Time").toStdString());
 
     notes.emplace_back(time, duration, midiKeyValue, velocity);
 
@@ -25,10 +26,10 @@ int ClipEventLoader::loadNotes(QDomElement& keyTrack, std::vector<MidiNote>& not
 
 
 void ClipEventLoader::loadClipAtributes(ClipEvent& clipEvent){
-  double start = stod(getValue(notesListXml.item(i), "CurrentStart").toStdString();
-  double end = stod(getValue(notesListXml.item(i), "CurrentEnd").toStdString();
-  double startRelative = stod(getValue(notesListXml.item(i), "Loop->StartRelative").toStdString();
-  double clipLength = stod(getValue(notesListXml.item(i), "Loop->LoopEnd").toStdString();
+  double start = stod(getValue(clipXml, "CurrentStart->Value").toStdString());
+  double end = stod(getValue(clipXml, "CurrentEnd->Value").toStdString());
+  double startRelative = stod(getValue(clipXml, "Loop->StartRelative->Value").toStdString());
+  double clipLength = stod(getValue(clipXml, "Loop->LoopEnd->Value").toStdString());
 
   this->end=end;
   clipEvent.start = start;
