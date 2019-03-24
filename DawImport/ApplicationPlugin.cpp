@@ -32,6 +32,7 @@
 #include "Debug.hpp"
 #include "CreateStructs.hpp"
 
+#include "CreateStructs.hpp"
 
 namespace DawImport
 {
@@ -115,9 +116,8 @@ namespace DawImport
         AbletonDocumentCreator adc ;
         adc.createDoc(abletonDoc, *firstScenario, m);
 
-        m.commit();
-
       }
+      //toby
     }
 
 }
