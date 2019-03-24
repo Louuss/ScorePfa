@@ -27,12 +27,12 @@ struct ClipEventCreator {
       {
         constexpr double y = 0.02;
 
-        // Create Interval
-        auto& in = macro.createIntervalAfter(scenar, startDot->id(), {getQtime(ce.end), y});
-        startDot = &Scenario::endState(in, scenar);
-
-        // Create a loop
-        auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
+        // // Create Interval
+        // auto& in = macro.createIntervalAfter(scenar, startDot->id(), {getQtime(ce.end), y});
+        // startDot = &Scenario::endState(in, scenar);
+        //
+        // // Create a loop
+        // auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
       }
 
       void operator()(AudioClipEvent& audioClipEvent)
@@ -48,7 +48,7 @@ struct ClipEventCreator {
         auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
 
 
-        //createClipEvent(audioClipEvent);
+        createClipEvent(audioClipEvent);
         //create the sound process with the path
         macro.createProcessInNewSlot<Media::Sound::ProcessModel>(loop.interval(), QString::fromStdString(audioClipEvent.path));
       }
@@ -88,23 +88,8 @@ struct TrackCreator{
         // base
         constexpr double y = 0.02;
         auto& start1 = macro.createState(scenar, scenar.startEvent().id(), y);
-        QTime tiempo ;
-        // get the last clipEvent ending time
-        if (auto val = std::get_if<AudioClipEvent>(&tr.clipEvents.back()))
-        {
-          double trackEnding = val->end;
-          tiempo = getQtime(trackEnding);
-        }
-        if (auto val = std::get_if<MidiClipEvent>(&tr.clipEvents.back()))
-        {
-          double trackEnding = val->end;
-          tiempo  = getQtime(trackEnding);
-        }
-
-
-
-
-        const auto& [t2, e2, end1] = macro.createDot(scenar, {tiempo, y});
+        // ending dot
+        const auto& [t2, e2, end1] = macro.createDot(scenar, {getQtime(tr.length), y});
         // creates the track interval
         const auto& interval1 = macro.createInterval(scenar, start1.id(), end1.id());
 
@@ -118,5 +103,32 @@ struct TrackCreator{
           std::visit(cec,tr.clipEvents[i]);
         }
     }
+    void operator()(MidiTrack& track)
+    {
+      createTrack(track);
+    }
+    void operator()(AudioTrack& track)
+    {
+      createTrack(track);
+    }
+
+};
+
+
+
+struct AbletonDocumentCreator {
+
+  void createDoc(QDomDocument& docXml, const Scenario::ProcessModel& scenar, Scenario::Command::Macro& macro)
+  {
+      AbletonDocumentLoader aLoad {} ;
+      AbletonDocument aDoc {} ;
+      aLoad.loadAbletonDocument(docXml, aDoc);
+
+      for (int i = 0; i < aDoc.tracks.size(); i++) {
+
+        std::visit(TrackCreator{scenar,macro},  aDoc.tracks[i]);
+
+      }
+  }
 
 };

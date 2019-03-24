@@ -58,7 +58,7 @@ struct AudioTrack:Track{
 
 
 struct AbletonDocument{
-  std::vector<std::variant<AudioTrack, MidiTrack> > tracks;
+  std::vector <std::variant<AudioTrack, MidiTrack>> tracks;
 };
 
 #endif

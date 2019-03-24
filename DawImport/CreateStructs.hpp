@@ -23,3 +23,5 @@
 
 #include <QMenu>
 #include <QtXml/QtXml>
+
+#include "ParseStructs.hpp"
