@@ -208,5 +208,4 @@ void createAudioClip(
   //macro.createProcessInNewSlot<Media::Sound::ProcessModel> ( i1, path);
 
   macro.commit();
-
 }

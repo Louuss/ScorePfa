@@ -9,16 +9,24 @@ set(HDRS
     DawImport/ParseStructs.hpp
     DawImport/Structs.hpp
     DawImport/getXmlElements.hpp
+<<<<<<< HEAD
     DawImport/gzipSupport.hpp
     DawImport/Debug.hpp
+=======
+    DawImport/CreateStructs.hpp
+>>>>>>> 439c33902c1c1b93f8141cf94212a55803d1e155
     score_addon_dawimport.hpp
 )
 set(SRCS
     DawImport/ApplicationPlugin.cpp
     DawImport/ParseStructs.cpp
     DawImport/getXmlElements.cpp
+<<<<<<< HEAD
     DawImport/Debug.cpp
     DawImport/gzipSupport.cpp
+=======
+    DawImport/CreateStructs.cpp
+>>>>>>> 439c33902c1c1b93f8141cf94212a55803d1e155
     score_addon_dawimport.cpp
 )
 
