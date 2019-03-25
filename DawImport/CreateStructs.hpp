@@ -39,7 +39,9 @@ struct ClipEventCreator {
   Id<Scenario::StateModel> endDot = Id<Scenario::StateModel>();
   double prevEnd = 0;
 
-  void createClipEvent(ClipEvent& ce);
+
+
+  Loop::ProcessModel& createClipEvent(ClipEvent& ce);
   void operator()(AudioClipEvent& audioClipEvent);
   void operator()(MidiClipEvent& midiClipEvent);
   Loop::ProcessModel& createLoop(ClipEvent& clipEvent);

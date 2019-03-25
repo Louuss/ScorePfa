@@ -9,7 +9,7 @@ QTime getQtime(double time, double BPM){
   return t;
 }
 
-std::vector<Midi::NoteData> convertToScoreNotes(std::vector<MidiNote> midiNotes){
+std::vector<Midi::NoteData> convertToScoreNotes(std::vector<MidiNote> midiNotes, double BPM){
   std::vector<Midi::NoteData> scoreNotes;
   for (int i=0; i<midiNotes.size(); i++){
     MidiNote note = midiNotes[i];
@@ -20,26 +20,27 @@ std::vector<Midi::NoteData> convertToScoreNotes(std::vector<MidiNote> midiNotes)
 
 
 
-void ClipEventCreator::createClipEvent(ClipEvent& ce)
+Loop::ProcessModel& ClipEventCreator::createClipEvent(ClipEvent& ce)
 {
   constexpr double y = 0.02;
 
-  // // Create Interval
-  // auto& in = macro.createIntervalAfter(scenar, startDot->id(), {getQtime(ce.end), y});
-  // startDot = &Scenario::endState(in, scenar);
-  //
-  // // Create a loop
-  // auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
+  if(ce.start != prevEnd){
+    auto& emptyInterval = macro.createIntervalAfter(scenar, startDot, {getQtime(ce.start), y});
+    startDot = Scenario::endState(emptyInterval, scenar).id();
+  }
+
+  auto& in = macro.createIntervalAfter(scenar, startDot, {getQtime(ce.end), y});
+  endDot = Scenario::endState(in, scenar).id();
+  prevEnd = ce.end;
+
+  // Creates a loop
+  auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
+  // and returns it
+  return loop;
+
 }
 
-void ClipEventCreator::operator()(AudioClipEvent& audioClipEvent)
-{
-
-
-}
-
-
-void ClipEventCreator::operator()(MidiClipEvent& midiClipEvent)
+void ClipEventCreator::operator()(AudioClipEvent& clip)
 {
 
   auto& loop = createLoop(midiClipEvent);
@@ -76,7 +77,6 @@ Loop::ProcessModel& ClipEventCreator::createLoop(ClipEvent& clipEvent)
 void TrackCreator::createTrack(Track& tr)
 {
     // base
-
     constexpr double y = 0.02;
     auto& mainStart = macro.createState(scenar, scenar.startEvent().id(), y);
     // ending dot
