@@ -1,10 +1,11 @@
 #include "CreateStructs.hpp"
 
 
-QTime getQtime(double time){
+QTime getQtime(double time, double BPM){
+  time = time/(BPM/60);
   QTime t(0,0,0);
   t = t.addSecs((int)time);
-  t = t.addMSecs((int)(time/1000));
+  t = t.addMSecs((int)((time-floor(time))*1000));
   return t;
 }
 
@@ -40,26 +41,35 @@ void ClipEventCreator::operator()(AudioClipEvent& audioClipEvent)
 
 void ClipEventCreator::operator()(MidiClipEvent& midiClipEvent)
 {
+
+  auto& loop = createLoop(midiClipEvent);
+  auto& midi = macro.createProcessInNewSlot<Midi::ProcessModel>(loop.interval(), {});
+  // add notes
+  macro.submit(new Midi::ReplaceNotes(midi, convertToScoreNotes(midiClipEvent.midiNotes), 0, 127, getQtime(1, BPM)));
+}
+
+
+Loop::ProcessModel& ClipEventCreator::createLoop(ClipEvent& clipEvent)
+{
     constexpr double y = 0.02;
 
-    if(midiClipEvent.start != prevEnd){
-      auto& emptyInterval = macro.createIntervalAfter(scenar, startDot, {getQtime(midiClipEvent.start), y});
+    if(clipEvent.start != prevEnd){
+      auto& emptyInterval = macro.createIntervalAfter(scenar, startDot, {getQtime(clipEvent.start, BPM), y});
       startDot = Scenario::endState(emptyInterval, scenar).id();
     }
 
     // Create Interval
-    auto& in = macro.createIntervalAfter(scenar, startDot, {getQtime(midiClipEvent.end), y});
-    endDot = Scenario::endState(in, scenar).id();
-    prevEnd = midiClipEvent.end;
+    auto& loopInterval = macro.createIntervalAfter(scenar, startDot, {getQtime(clipEvent.end, BPM), y});
+    endDot = Scenario::endState(loopInterval, scenar).id();
+    prevEnd = clipEvent.end;
     // Create a loop
-    auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(in, {});
+    auto& loop = macro.createProcessInNewSlot<Loop::ProcessModel>(loopInterval, {});
 
-    //  createClipEvent(midiClipEvent);
-    // create the midi process
-
-    auto& midi = macro.createProcessInNewSlot<Midi::ProcessModel>(loop.interval(), {});
-    // add notes
-    new Midi::ReplaceNotes(midi, convertToScoreNotes(midiClipEvent.midiNotes), 0, 127, getQtime(midiClipEvent.end - midiClipEvent.start));
+    Scenario::IntervalDurations::Algorithms::changeAllDurations(
+                                              loop.interval(), getQtime(clipEvent.clipLength, BPM));
+    loop.endEvent().setDate(getQtime(clipEvent.clipLength, BPM));
+    loop.endTimeSync().setDate(getQtime(clipEvent.clipLength, BPM));
+    return loop;
 }
 
 
@@ -70,7 +80,7 @@ void TrackCreator::createTrack(Track& tr)
     constexpr double y = 0.02;
     auto& mainStart = macro.createState(scenar, scenar.startEvent().id(), y);
     // ending dot
-    const auto& [t2, e2, trackEnd] = macro.createDot(scenar, {getQtime(tr.length), y});
+    const auto& [t2, e2, trackEnd] = macro.createDot(scenar, {getQtime(tr.length, BPM), y});
     // creates the track interval
     const auto& trackInterval = macro.createInterval(scenar, mainStart.id(), trackEnd.id());
 
@@ -79,11 +89,7 @@ void TrackCreator::createTrack(Track& tr)
     auto& trackStart = macro.createState(track, track.startEvent().id(), y);
 
 
-
-
-
-
-    ClipEventCreator cec{track, macro, trackStart.id()};
+    ClipEventCreator cec{track, macro, trackStart.id(), BPM};
 
     for(int i = 0; i<tr.clipEvents.size(); i++)
     {
@@ -109,9 +115,10 @@ void AbletonDocumentCreator::createDoc( AbletonDocument aDoc,
   const Scenario::ProcessModel& scenar,
   Scenario::Command::Macro& macro)
   {
+    double BPM = aDoc.BPM;
     for (int i = 0; i < aDoc.tracks.size(); i++) {
       std::cout<<"JE VEUX CREER LA TRACK : " << i <<std::endl;
-      std::visit(TrackCreator{scenar,macro},  aDoc.tracks[i]);
+      std::visit(TrackCreator{scenar,macro, BPM},  aDoc.tracks[i]);
 
     }
 

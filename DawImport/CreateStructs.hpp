@@ -28,17 +28,21 @@
 
 #include "ParseStructs.hpp"
 
+#include <math.h>
+
 struct ClipEventCreator {
 
   const Scenario::ProcessModel& scenar;
   Scenario::Command::Macro& macro;
   Id<Scenario::StateModel> startDot;
+  double BPM;
   Id<Scenario::StateModel> endDot = Id<Scenario::StateModel>();
   double prevEnd = 0;
 
   void createClipEvent(ClipEvent& ce);
   void operator()(AudioClipEvent& audioClipEvent);
   void operator()(MidiClipEvent& midiClipEvent);
+  Loop::ProcessModel& createLoop(ClipEvent& clipEvent);
 
 };
 
@@ -47,6 +51,7 @@ struct TrackCreator{
 
   const Scenario::ProcessModel& scenar;
   Scenario::Command::Macro& macro;
+  double BPM;
   void createTrack(Track& tr);
   void operator()(MidiTrack& track);
   void operator()(AudioTrack& track);
