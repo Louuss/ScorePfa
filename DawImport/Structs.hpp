@@ -43,6 +43,7 @@ struct Track{
   std::string name;
   double length;
   std::vector<std::variant<AudioClipEvent, MidiClipEvent> > clipEvents;
+  
 };
 
 struct MidiTrack:Track{

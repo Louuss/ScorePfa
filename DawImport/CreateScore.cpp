@@ -175,7 +175,9 @@ void createMidiClip(
 
   // Et un fichier son
   /*const auto& i2 = macro.createIntervalAfter(scenar, s2.id(), {5000ms, y});
-  macro.createProcessInNewSlot<Media::Sound::ProcessModel>(i2, PLUGIN_SOURCE_DIR "/DawImport/resources/test.wav");
+
+
+
 */
   macro.commit();
 }
