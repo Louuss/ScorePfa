@@ -54,6 +54,7 @@ struct TrackCreator{
   const Scenario::ProcessModel& scenar;
   Scenario::Command::Macro& macro;
   double BPM;
+  double y;
   void createTrack(Track& tr);
   void operator()(MidiTrack& track);
   void operator()(AudioTrack& track);
