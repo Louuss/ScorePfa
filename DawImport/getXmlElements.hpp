@@ -5,6 +5,12 @@
 #include <QtXml/QtXml>
 #include <vector>
 
+/**
+  \file getXmlElements.hpp
+  \brief Search on a xml file interesting data
+
+  */
+
 QDomNodeList getNodes(QDomElement& n, QStringList args);
 QDomNodeList getList(QDomDocument& doc, QString str);
 QDomNodeList getList(QDomElement& elem, QString str);
