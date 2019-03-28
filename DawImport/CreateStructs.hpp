@@ -29,6 +29,12 @@
 
 #include <math.h>
 
+/**
+\file CreateStructs.hpp
+\brief Create Score structures from our own structures defined in Structs.hpp
+
+*/
+
 struct ClipEventCreator
 {
 
@@ -39,9 +45,24 @@ struct ClipEventCreator
   Id<Scenario::StateModel> endDot = Id<Scenario::StateModel>();
   double prevEnd = 0;
 
+  /**
+  \fn Loop::ProcessModel& createClipEvent(ClipEvent& ce)
+  \brief
+
+  \param ce
+
+  */
   Loop::ProcessModel& createClipEvent(ClipEvent& ce);
   void operator()(AudioClipEvent& audioClipEvent);
   void operator()(MidiClipEvent& midiClipEvent);
+
+  /**
+  \fn Loop::ProcessModel& createLoop(ClipEvent& clipEvent)
+  \brief
+
+  \param clipEvent
+
+  */
   Loop::ProcessModel& createLoop(ClipEvent& clipEvent);
 };
 
@@ -52,6 +73,14 @@ struct TrackCreator
   Scenario::Command::Macro& macro;
   double BPM;
   double y;
+
+  /**
+  \fn void createTrack(Track& tr)
+  \brief
+
+  \param tr
+
+  */
   void createTrack(Track& tr);
   void operator()(MidiTrack& track);
   void operator()(AudioTrack& track);
@@ -59,6 +88,15 @@ struct TrackCreator
 
 struct AbletonDocumentCreator
 {
+  /**
+  \fn void createDoc(AbletonDocument aDoc, const Scenario::ProcessModel& scenar, Scenario::Command::Macro& macro)
+  \brief Fills the given ClipEvent with the values found in the clipXml
+
+  \param aDoc The AbletonDocument from where the score structures are built
+  \param scenar
+  \param macro
+
+  */
   void createDoc(
       AbletonDocument aDoc,
       const Scenario::ProcessModel& scenar,
