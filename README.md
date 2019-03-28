@@ -11,6 +11,15 @@ To use this adddon you need to add it to the addons directory in the Score src d
 
 In this early development phase, this addon is capable of creating midi tracks and audio tracks based on those in the Ableton Live sequencer. It will attempt to find audio clips in audio tracks and VSTs for midi tracks based on the paths given by Ableton. It will not however configure the VSTs for instruments or add any effects that were in Ableton.
 
+## Usefull parts
+
+The Structs.hpp found in DawImport is meant to be the foundation of a generic architecture to represent Ableton Projects. It uses std::variants for type unions to be visited with std::visit. To remain generic, this structure base must never be dependent on any non standard libraries.
+
+## Documentation
+
+This project uses Doxygen comments for it's documentation.
+To compile documentation run `doxygen Doxyfile` from the documentation folder.
+
 ## TODO
 
 * Emprove score integration to include the use of relativeStart in ClipEvents to start loops from a point in the clip.
