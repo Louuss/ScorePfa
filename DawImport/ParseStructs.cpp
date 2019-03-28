@@ -1,10 +1,3 @@
-/**
- * [ClipEventLoader::loadNotes description]
- * @param  keyTrack     [description]
- * @param  notes        [description]
- * @param  midiKeyValue [description]
- * @return              [description]
- */
 
 #include "ParseStructs.hpp"
 
