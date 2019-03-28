@@ -7,56 +7,19 @@ This is an addon for OSSIA Score that allows users to import projects from Ablet
 To use this adddon you need to add it to the addons directory in the Score src directory and recompile Score.
 
 
-## Running the tests
+## Functionalities
 
-Explain how to run the automated tests for this system
+In this early development phase, this addon is capable of creating midi tracks and audio tracks based on those in the Ableton Live sequencer. It will attempt to find audio clips in audio tracks and VSTs for midi tracks based on the paths given by Ableton. It will not however configure the VSTs for instruments or add any effects that were in Ableton.
 
-### Break down into end to end tests
+##TODO
 
-Explain what these tests test and why
+* Emprove score integration to include the use of relativeStart in ClipEvents to start loops from a point in the clip.
+* Implement the Device Chain system used in Ableton Live to copy all effects
+* Import VST configuration from Ableton
 
-```
-Give an example
-```
 
-### And coding style tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* We would like to thank Jean-Michaël Celerier for his help overseeing the development of this addon
