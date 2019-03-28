@@ -43,7 +43,7 @@ struct ClipEventLoader{
 
 struct TrackLoader{
   QDomElement& trackXml;
-  int trackType;
+  int trackType = NULLTRACKTYPE;
 
   /**
   \fn void loadTrack(Track& track)

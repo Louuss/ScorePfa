@@ -43,7 +43,7 @@ namespace DawImport
     ApplicationPlugin::ApplicationPlugin(const score::GUIApplicationContext& app):
     score::GUIApplicationPlugin{app}
     {
-      m_generate = new QAction{tr("Generate a score"), nullptr};
+      m_generate = new QAction{tr("Ableton Project"), nullptr};
       connect(m_generate, &QAction::triggered, this, &ApplicationPlugin::generate);
     }
 

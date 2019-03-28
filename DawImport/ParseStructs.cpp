@@ -97,7 +97,7 @@ void AbletonDocumentLoader::loadTracks(
       }
 
       QDomElement a = tracksXml.item(i).toElement();
-      std::visit(TrackLoader{a,0}, tracks.back());
+      std::visit(TrackLoader{a}, tracks.back());
 
     }
 

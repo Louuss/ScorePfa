@@ -20,5 +20,3 @@ private:
   score::GUIApplicationPlugin* make_guiApplicationPlugin(
           const score::GUIApplicationContext& app) override;
 };
-
-//test
