@@ -2,7 +2,9 @@
 #define GETXMLELEMENTS
 
 #include "XmlPaths.hpp"
+
 #include <QtXml/QtXml>
+
 #include <vector>
 
 /**
@@ -36,7 +38,8 @@ QDomNodeList getList(QDomDocument& doc, QString str);
 
 /**
 \fn QDomNodeList getList(QDomElement& elem, QString str);
-\brief Does exactly the same thing as the above function; but on a QDomElement instead
+\brief Does exactly the same thing as the above function; but on a QDomElement
+instead
 
 */
 QDomNodeList getList(QDomElement& elem, QString str);
@@ -67,10 +70,10 @@ QString getItemValue(QDomElement& n, QString path);
 
 /**
 \fn QString getItemValue(QDomDocument& doc, QString path)
-\brief The same function as above, but called with a QDomDocument corresponding to the entire Xml file
+\brief The same function as above, but called with a QDomDocument corresponding
+to the entire Xml file
 */
 QString getItemValue(QDomDocument& doc, QString path);
-
 
 /**
 \fn std::string getAudioClipPath(QDomElement& clipEventXml)
@@ -81,6 +84,5 @@ QString getItemValue(QDomDocument& doc, QString path);
 \return A string containing the path of the AudioClip
 */
 std::string getAudioClipPath(QDomElement& clipEventXml);
-
 
 #endif

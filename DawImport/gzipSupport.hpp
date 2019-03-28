@@ -1,8 +1,9 @@
 #ifndef GZIP_SUPPORT
 #define GZIP_SUPPORT
 
-#include <zlib.h>
 #include <QByteArray>
+
+#include <zlib.h>
 
 #define GZIP_WINDOWS_BIT 15 + 16
 #define GZIP_CHUNK_SIZE 32 * 1024
@@ -22,6 +23,6 @@
   \return True if the conversion succeeded, False otherwise
     */
 
-bool gzipDecompress(QByteArray input, QByteArray &output);
+bool gzipDecompress(QByteArray input, QByteArray& output);
 
 #endif

@@ -1,10 +1,11 @@
 #include "gzipSupport.hpp"
-bool gzipDecompress(QByteArray input, QByteArray &output){
+bool gzipDecompress(QByteArray input, QByteArray& output)
+{
   // Prepare output
   output.clear();
 
   // Is there something to do?
-  if(input.length() > 0)
+  if (input.length() > 0)
   {
     // Prepare inflater status
     z_stream strm;
@@ -18,20 +19,21 @@ bool gzipDecompress(QByteArray input, QByteArray &output){
     int ret = inflateInit2(&strm, GZIP_WINDOWS_BIT);
 
     if (ret != Z_OK)
-    return(false);
+      return (false);
 
     // Extract pointer to input data
-    char *input_data = input.data();
+    char* input_data = input.data();
     int input_data_left = input.length();
 
     // Decompress data until available
-    do {
+    do
+    {
       // Determine current chunk size
       int chunk_size = qMin(GZIP_CHUNK_SIZE, input_data_left);
 
       // Check for termination
-      if(chunk_size <= 0)
-      break;
+      if (chunk_size <= 0)
+        break;
 
       // Set inflater references
       strm.next_in = (unsigned char*)input_data;
@@ -42,7 +44,8 @@ bool gzipDecompress(QByteArray input, QByteArray &output){
       input_data_left -= chunk_size;
 
       // Inflate chunk and cumulate output
-      do {
+      do
+      {
 
         // Declare vars
         char out[GZIP_CHUNK_SIZE];
@@ -54,25 +57,26 @@ bool gzipDecompress(QByteArray input, QByteArray &output){
         // Try to inflate chunk
         ret = inflate(&strm, Z_NO_FLUSH);
 
-        switch (ret) {
+        switch (ret)
+        {
           case Z_NEED_DICT:
-          ret = Z_DATA_ERROR;
+            ret = Z_DATA_ERROR;
           case Z_DATA_ERROR:
           case Z_MEM_ERROR:
           case Z_STREAM_ERROR:
-          // Clean-up
-          inflateEnd(&strm);
+            // Clean-up
+            inflateEnd(&strm);
 
-          // Return
-          return(false);
+            // Return
+            return (false);
         }
 
         // Determine decompressed size
         int have = (GZIP_CHUNK_SIZE - strm.avail_out);
 
         // Cumulate result
-        if(have > 0)
-        output.append((char*)out, have);
+        if (have > 0)
+          output.append((char*)out, have);
 
       } while (strm.avail_out == 0);
 
@@ -84,7 +88,8 @@ bool gzipDecompress(QByteArray input, QByteArray &output){
     // Return
     return (ret == Z_STREAM_END);
   }
-  else{
-    return(true);
+  else
+  {
+    return (true);
   }
 }

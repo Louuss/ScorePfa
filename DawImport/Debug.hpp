@@ -2,6 +2,7 @@
 #define DEBUG_ALS_IMPORT
 
 #include "Structs.hpp"
+
 #include <iostream>
 
 /**
@@ -12,7 +13,8 @@
 
 /**
 \fn void displayAbletonDoc(AbletonDocument& doc)
-\brief Display all the fields of the given AbletonDocument and of its underlaying attributes
+\brief Display all the fields of the given AbletonDocument and of its
+underlaying attributes
 
 \param doc The AbletonDocument which has its attributes displayed
 
