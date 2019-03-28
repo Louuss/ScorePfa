@@ -64,9 +64,9 @@ void TrackLoader::loadTrack(Track& track){
 
   for (int i = 0; i < clipEventsXml.length(); i++) {
     QDomElement a = clipEventsXml.item(i).toElement();
-    if (trackType == 1){
+    if (trackType == MIDITRACK){
       track.clipEvents.push_back(MidiClipEvent());
-    }else if (trackType == 2){
+    }else if (trackType == AUDIOTRACK){
       track.clipEvents.push_back(AudioClipEvent());
     }
     ClipEventLoader loader{a};
@@ -77,13 +77,13 @@ void TrackLoader::loadTrack(Track& track){
 }
 
 void TrackLoader::operator()(MidiTrack& track){
-  trackType = 1;
+  trackType = MIDITRACK;
   loadTrack(track);
   track.VST = getItemValue(trackXml, PATH_VST_NAME).toStdString();
 }
 
 void TrackLoader::operator()(AudioTrack& track){
-  trackType = 2;
+  trackType = AUDIOTRACK;
   loadTrack(track);
 }
 
@@ -97,9 +97,9 @@ void AbletonDocumentLoader::loadTracks(
     QDomNodeList tracksXml = getList(docXml, path);
     std::cout<<tracksXml.length()<<std::endl;
     for (int i = 0; i < tracksXml.length(); i++) {
-      if(trackType == 1){
+      if(trackType == AUDIOTRACK){
         tracks.push_back(AudioTrack());
-      }else if(trackType == 2){
+      }else if(trackType == MIDITRACK){
         tracks.push_back(MidiTrack());
       }
 
@@ -113,6 +113,6 @@ void AbletonDocumentLoader::loadTracks(
 
 void AbletonDocumentLoader::loadAbletonDocument(QDomDocument& docXml, AbletonDocument& abletonDoc){
     abletonDoc.BPM = stod(getItemValue(docXml, PATH_BPM_VALUE).toStdString());
-    loadTracks(docXml, abletonDoc.tracks, PATH_MIDI_TRACKS, 2);
-    loadTracks(docXml, abletonDoc.tracks, PATH_AUDIO_TRACKS, 1);
+    loadTracks(docXml, abletonDoc.tracks, PATH_MIDI_TRACKS, MIDITRACK);
+    loadTracks(docXml, abletonDoc.tracks, PATH_AUDIO_TRACKS, AUDIOTRACK);
 }
