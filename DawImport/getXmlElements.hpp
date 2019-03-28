@@ -70,6 +70,9 @@ QString getItemValue(QDomElement& n, QString path);
 \brief The same function as above, but called with a QDomDocument corresponding to the entire Xml file
 */
 QString getItemValue(QDomDocument& doc, QString path);
+<<<<<<< HEAD
+std::string getAudioClipPath(QDomElement& clipEventXml);
+=======
 
 /**
 \fn std::string getAudioClipPath(QDomElement& docXml)
@@ -80,6 +83,7 @@ QString getItemValue(QDomDocument& doc, QString path);
 \return A string containing the path of the AudioClip
 */
 std::string getAudioClipPath(QDomElement& docXml);
+>>>>>>> 229e9db96f65a78d92b86d2cbc3b859c70e66290
 
 
 #endif

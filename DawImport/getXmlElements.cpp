@@ -3,9 +3,14 @@
 using namespace std;
 
 
+QDomNodeList getList(QDomDocument& doc, QString str){
+  QDomElement n = doc.firstChildElement("Ableton");
+  return getList(n, str);
+}
 
-QDomNodeList getNodes(QDomElement& n, QStringList args){
-  QDomElement currentElement = n;
+QDomNodeList getList(QDomElement& elem, QString str){
+  QStringList args =  str.split("->");
+  QDomElement currentElement = elem;
 
   for(int i=0;i<args.length()-1;i++){
     cout<<args.at(i).toStdString()<<endl;
@@ -13,16 +18,6 @@ QDomNodeList getNodes(QDomElement& n, QStringList args){
   }
 
   return currentElement.elementsByTagName(args.at(args.length()-1));
-}
-
-
-QDomNodeList getList(QDomDocument& doc, QString str){
-  QDomElement n = doc.firstChildElement("Ableton");
-  return getNodes(n, str.split("->"));
-}
-
-QDomNodeList getList(QDomElement& elem, QString str){
-  return getNodes(elem, str.split("->"));
 }
 
 QDomNodeList getClipEvents(QDomElement& elem){
@@ -51,7 +46,6 @@ QString getItemValue(QDomElement& n, QString path){
 }
 QString getItemValue(QDomDocument& doc, QString path){
   QDomElement n = doc.firstChildElement("Ableton");
-
   return getItemValue(n, path);
 }
 

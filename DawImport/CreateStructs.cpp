@@ -81,7 +81,7 @@ Loop::ProcessModel& ClipEventCreator::createLoop(ClipEvent& clipEvent)
 
 void TrackCreator::createTrack(Track& tr)
 {
-    
+
     auto& mainStart = macro.createState(scenar, scenar.startEvent().id(), y);
     // ending dot
     const auto& [t2, e2, trackEnd] = macro.createDot(scenar, {getQtime(tr.length, BPM), y});

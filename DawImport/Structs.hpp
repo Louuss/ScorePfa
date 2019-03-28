@@ -14,6 +14,12 @@
 #include <vector>
 #include <variant>
 
+enum TRACKTYPE{
+  MIDITRACK,
+  AUDIOTRACK
+};
+
+
 struct MidiNote{
   double start;
   double duration;
@@ -43,16 +49,14 @@ struct Track{
   std::string name;
   double length;
   std::vector<std::variant<AudioClipEvent, MidiClipEvent> > clipEvents;
-  
+
 };
 
 struct MidiTrack:Track{
-  //std::vector<MidiClipEvent> midiClipEvents;
   std::string VST;
 };
 
 struct AudioTrack:Track{
-  //std::vector<AudioClipEvent> audioClipEvents;
 
 };
 

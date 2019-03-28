@@ -38,15 +38,6 @@
 namespace DawImport
 {
 
-  static void generateScore(
-    const Scenario::ScenarioDocumentModel& root,
-    const Scenario::ProcessModel& scenar,
-    Scenario::Command::Macro& macro,
-    const score::GUIApplicationContext& context)
-    {
-
-
-    }
 
 
     ApplicationPlugin::ApplicationPlugin(const score::GUIApplicationContext& app):
@@ -109,8 +100,6 @@ namespace DawImport
         AbletonDocumentLoader ADL;
 
         ADL.loadAbletonDocument(docXml, abletonDoc);
-        //createTrack(base, *firstScenario, m, this->context, 10,0.02, abletonDoc.midiTracks[0].midiClipEvents[0]);
-
 
         displayAbletonDoc(abletonDoc);
 
