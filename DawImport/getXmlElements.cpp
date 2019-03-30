@@ -62,7 +62,7 @@ QString getItemValue(QDomDocument& doc, QString path)
 std::string getAudioClipPath(QDomElement& clipEventXml)
 {
   QDomNodeList pathList = getList(clipEventXml, PATH_AUDIO_CLIP_PATH);
-  QString path;
+  QString path = "/";
   for (int i = 0; i < pathList.size(); i++)
   {
     path += pathList.at(i).attributes().item(0).nodeValue();

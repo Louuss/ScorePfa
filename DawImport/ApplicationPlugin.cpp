@@ -41,7 +41,7 @@ ApplicationPlugin::ApplicationPlugin(const score::GUIApplicationContext& app)
 
 score::GUIElements ApplicationPlugin::makeGUIElements()
 {
-  auto& m = context.menus.get().at(score::Menus::Export());
+  auto& m = context.menus.get().at(score::Menus::Import());
   QMenu* menu = m.menu();
   menu->addAction(m_generate);
   return {};
