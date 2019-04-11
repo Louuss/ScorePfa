@@ -41,7 +41,7 @@ ApplicationPlugin::ApplicationPlugin(const score::GUIApplicationContext& app)
 
 score::GUIElements ApplicationPlugin::makeGUIElements()
 {
-  auto& m = context.menus.get().at(score::Menus::Import());
+  auto& m = context.menus.get().at(score::Menus::Export());
   QMenu* menu = m.menu();
   menu->addAction(m_generate);
   return {};
@@ -96,8 +96,11 @@ void ApplicationPlugin::generate()
 
     displayAbletonDoc(abletonDoc);
 
+    Scenario::ScenarioDocumentModel& base
+      = score::IDocument::get<Scenario::ScenarioDocumentModel>(*doc);
+
     AbletonDocumentCreator adc;
-    adc.createDoc(abletonDoc, *firstScenario, m);
+    adc.createDoc(abletonDoc, *firstScenario, m, this->context, base);
   }
 }
 

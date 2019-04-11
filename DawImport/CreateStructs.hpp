@@ -42,6 +42,9 @@ struct ClipEventCreator
   Scenario::Command::Macro& macro;
   Id<Scenario::StateModel> startDot;
   double BPM;
+  const Scenario::ScenarioDocumentModel& root;
+
+
   Id<Scenario::StateModel> endDot = Id<Scenario::StateModel>();
   double prevEnd = 0;
 
@@ -66,6 +69,9 @@ struct TrackCreator
   Scenario::Command::Macro& macro;
   double BPM;
   double y;
+  const score::GUIApplicationContext& context;
+  const Scenario::ScenarioDocumentModel& root;
+  Id<Scenario::IntervalModel> trackId = Id<Scenario::IntervalModel>() ;
 
   /**
   \fn void createTrack(Track& tr)
@@ -74,7 +80,8 @@ struct TrackCreator
   \param tr
 
   */
-  void createTrack(Track& tr);
+  void addFX(MidiTrack& tr, const Scenario::ProcessModel& trackScenario);
+  const Scenario::ProcessModel& createTrack(Track& tr);
   void operator()(MidiTrack& track);
   void operator()(AudioTrack& track);
 };
@@ -93,7 +100,9 @@ struct AbletonDocumentCreator
   void createDoc(
       AbletonDocument aDoc,
       const Scenario::ProcessModel& scenar,
-      Scenario::Command::Macro& macro);
+      Scenario::Command::Macro& macro,
+      const score::GUIApplicationContext& context,
+      const Scenario::ScenarioDocumentModel& root);
 };
 
 #endif

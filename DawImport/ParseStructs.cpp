@@ -11,9 +11,9 @@ int ClipEventLoader::loadNotes(
   for (int i = 0; i < notesListXml.length(); i++)
   {
     QDomElement a = notesListXml.item(i).toElement();
-    uint8_t velocity = stoi(getItemValue(a, "Velocity").toStdString());
-    double duration = stod(getItemValue(a, "Duration").toStdString());
-    double time = stod(getItemValue(a, "Time").toStdString());
+    uint8_t velocity = stoi(getItemValue(a, NAME_VELOCITY).toStdString());
+    double duration = stod(getItemValue(a, NAME_VELOCITY).toStdString());
+    double time = stod(getItemValue(a, NAME_TIME).toStdString());
 
     notes.emplace_back(time, duration, midiKeyValue, velocity);
   }
@@ -23,12 +23,12 @@ int ClipEventLoader::loadNotes(
 void ClipEventLoader::loadClipAtributes(ClipEvent& clipEvent)
 {
   double start
-      = stod(getItemValue(clipXml, "CurrentStart->Value").toStdString());
-  double end = stod(getItemValue(clipXml, "CurrentEnd->Value").toStdString());
+      = stod(getItemValue(clipXml, PATH_START_VALUE).toStdString());
+  double end = stod(getItemValue(clipXml, PATH_END_VALUE).toStdString());
   double startRelative = stod(
-      getItemValue(clipXml, "Loop->StartRelative->Value").toStdString());
+      getItemValue(clipXml, PATH_STARTRELATIVE_VALUE).toStdString());
   double clipLength
-      = stod(getItemValue(clipXml, "Loop->LoopEnd->Value").toStdString());
+      = stod(getItemValue(clipXml, PATH_LOOPEND_VALUE).toStdString());
 
   this->end = end;
   clipEvent.start = start;
@@ -45,13 +45,8 @@ void ClipEventLoader::operator()(MidiClipEvent& midiClipEvent)
 
   for (int i = 0; i < keyTrackListXml.length(); i++)
   {
-    uint8_t midiKeyValue = stoi(keyTrackListXml.item(i)
-                                    .firstChildElement("MidiKey")
-                                    .attributes()
-                                    .item(0)
-                                    .nodeValue()
-                                    .toStdString());
     QDomElement a = keyTrackListXml.item(i).toElement();
+    uint8_t midiKeyValue = stoi(getItemValue(a, PATH_MIDIKEY_VALUE).toStdString());
     loadNotes(a, midiClipEvent.midiNotes, midiKeyValue);
   }
 }

@@ -24,5 +24,15 @@ QString PATH_VST_NAME
 QString PATH_TRACK_NAME = "Name->EffectiveName->Value";
 QString PATH_BPM_VALUE
     = "LiveSet->MasterTrack->DeviceChain->Mixer->Tempo->Manual->Value";
+QString PATH_MIDIKEY_VALUE = "MidiKey->Value";
+
+QString PATH_START_VALUE = "CurrentStart->Value";
+QString PATH_END_VALUE = "CurrentEnd->Value";
+QString PATH_STARTRELATIVE_VALUE = "Loop->StartRelative->Value";
+QString PATH_LOOPEND_VALUE = "Loop->LoopEnd->Value";
+
+QString NAME_VELOCITY = "Velocity";
+QString NAME_DURATION = "Duration";
+QString NAME_TIME = "Time";
 
 #endif
